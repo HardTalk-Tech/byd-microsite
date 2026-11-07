@@ -1,0 +1,141 @@
+#!/usr/bin/env node
+/**
+ * Generates lib/geo/sri-lanka-provinces.ts (province fills + internal province borders
+ * as SVG paths in the 05 Showrooms map's 560 × 860 viewBox).
+ *
+ * Source: Natural Earth 1:10m admin-1 (public domain), Sri Lanka's 25 districts.
+ *   https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson
+ *
+ * Usage (download the file above first, ~40 MB):
+ *   node scripts/build-sri-lanka-provinces.mjs <path-to-ne_10m_admin_1_states_provinces.geojson>
+ *
+ * No dependencies. The kiosk only uses the generated file; it never loads boundary data.
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const input = process.argv[2];
+if (!input) {
+  console.error("Usage: node scripts/build-sri-lanka-provinces.mjs <ne_10m_admin_1_states_provinces.geojson>");
+  process.exit(1);
+}
+
+// Same projection as lib/geo/map-projection.ts (fitted to the design's outline).
+const project = ([lng, lat]) => [216.157 * lng - 17183.385, -216.977 * lat + 2141.156];
+const r1 = (n) => Math.round(n * 10) / 10;
+
+/** Natural Earth "region" (romanised Sinhala) → province id and English name. */
+const PROVINCES = {
+  "Basnāhira paḷāta": ["western", "Western Province"],
+  "Madhyama paḷāta": ["central", "Central Province"],
+  "Dakuṇu paḷāta": ["southern", "Southern Province"],
+  "Uturu paḷāta": ["northern", "Northern Province"],
+  "Næ̆gĕnahira paḷāta": ["eastern", "Eastern Province"],
+  "Vayamba paḷāta": ["north-western", "North Western Province"],
+  "Uturumæ̆da paḷāta": ["north-central", "North Central Province"],
+  "Ūva paḷāta": ["uva", "Uva Province"],
+  "Sabaragamuva paḷāta": ["sabaragamuwa", "Sabaragamuwa Province"],
+};
+
+const geojson = JSON.parse(fs.readFileSync(input, "utf8"));
+const districts = geojson.features.filter((f) => f.properties.adm0_a3 === "LKA");
+if (districts.length !== 25) throw new Error(`Expected 25 Sri Lankan districts, found ${districts.length}`);
+
+const rings = []; // { province, coords: [[lng, lat], …] }
+for (const f of districts) {
+  const entry = PROVINCES[f.properties.region];
+  if (!entry) throw new Error(`Unknown region: ${f.properties.region}`);
+  const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+  for (const poly of polys) for (const ring of poly) rings.push({ province: entry[0], coords: ring });
+}
+
+// ---- Province fills: all district rings of a province in one path ------------------------
+const ringPath = (coords) => {
+  const pts = coords.map(project).map(([x, y]) => [r1(x), r1(y)]);
+  const out = [];
+  for (const p of pts) {
+    const last = out[out.length - 1];
+    if (!last || last[0] !== p[0] || last[1] !== p[1]) out.push(p);
+  }
+  return out.length < 3 ? "" : `M${out.map((p) => p.join(",")).join("L")}Z`;
+};
+const fills = Object.values(PROVINCES).map(([id, name]) => ({
+  id,
+  name,
+  path: rings.filter((r) => r.province === id).map((r) => ringPath(r.coords)).join(""),
+}));
+
+// ---- Internal borders: district edges shared by two different provinces -------------------
+const key = ([lng, lat]) => `${lng.toFixed(6)},${lat.toFixed(6)}`;
+const edges = new Map(); // edgeKey → { a, b, provinces:Set }
+for (const { province, coords } of rings) {
+  for (let i = 0; i < coords.length - 1; i++) {
+    const a = coords[i], b = coords[i + 1];
+    const ka = key(a), kb = key(b);
+    if (ka === kb) continue;
+    const k = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
+    const e = edges.get(k) ?? { a, b, provinces: new Set(), count: 0 };
+    e.provinces.add(province);
+    e.count++;
+    edges.set(k, e);
+  }
+}
+const border = [...edges.values()].filter((e) => e.count >= 2 && e.provinces.size === 2);
+
+// Chain border edges into polylines.
+const adj = new Map();
+for (const e of border) {
+  for (const [p, q] of [[e.a, e.b], [e.b, e.a]]) {
+    const k = key(p);
+    if (!adj.has(k)) adj.set(k, []);
+    adj.get(k).push({ e, to: q });
+  }
+}
+const used = new Set();
+const lines = [];
+const walk = (start) => {
+  const line = [start];
+  let cur = start;
+  for (;;) {
+    const next = (adj.get(key(cur)) ?? []).find((n) => !used.has(n.e));
+    if (!next) break;
+    used.add(next.e);
+    line.push(next.to);
+    cur = next.to;
+  }
+  return line;
+};
+// Start at line ends (degree ≠ 2) first, then close any loops.
+for (const [k, list] of adj) if (list.length !== 2) for (const n of list) if (!used.has(n.e)) lines.push(walk(n.e.a && key(n.e.a) === k ? n.e.a : n.e.b));
+for (const e of border) if (!used.has(e)) lines.push(walk(e.a));
+
+const linePath = lines
+  .filter((l) => l.length > 1)
+  .map((l) => `M${l.map(project).map(([x, y]) => `${r1(x)},${r1(y)}`).join("L")}`)
+  .join("");
+
+// ---- Write ---------------------------------------------------------------------------------
+const here = path.dirname(fileURLToPath(import.meta.url));
+const outFile = path.join(here, "..", "lib", "geo", "sri-lanka-provinces.ts");
+const ts = `// GENERATED by scripts/build-sri-lanka-provinces.mjs – do not edit by hand.
+// Source: Natural Earth 1:10m admin-1 (public domain), projected to the 05 Showrooms
+// map's 560 × 860 viewBox with lib/geo/map-projection.ts.
+
+export type ProvinceId =
+${fills.map((f) => `  | "${f.id}"`).join("\n")};
+
+export interface Province {
+  id: ProvinceId;
+  name: string;
+  /** Filled area (all districts of the province). */
+  path: string;
+}
+
+export const PROVINCES: readonly Province[] = ${JSON.stringify(fills, null, 2)};
+
+/** Lines between neighbouring provinces (no coastline). */
+export const PROVINCE_BORDERS = ${JSON.stringify(linePath)};
+`;
+fs.writeFileSync(outFile, ts);
+console.log(`Wrote ${outFile}: ${fills.length} provinces, ${border.length} border edges in ${lines.length} lines, ${(ts.length / 1024).toFixed(1)} KB`);

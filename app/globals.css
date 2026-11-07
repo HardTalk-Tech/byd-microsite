@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Design tokens (from design/byd-kiosk-design.html – see docs/design-inventory.md)
+   ------------------------------------------------------------------ */
+@theme {
+  /* Surfaces */
+  --color-kiosk-bg: #0a0a0b;
+  --color-surface-1: #16171a;
+  --color-surface-2: #131416;
+  --color-qr-plate: #0e0f11;
+  --color-placeholder: #121316;
+  --color-ring-track: #24262b;
+
+  /* Text */
+  --color-ink: #f2f0eb; /* primary */
+  --color-ink-2: #c9ccd2; /* secondary */
+  --color-ink-3: #9a9da5; /* tertiary */
+  --color-ink-4: #8a8d95; /* muted labels */
+
+  /* Gold */
+  --color-gold: #c9a24a;
+  --color-gold-light: #e8c875;
+  --color-gold-label: #d9b865;
+
+  /* Motion */
+  --ease-kiosk: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-ripple: cubic-bezier(0.2, 0.6, 0.3, 1);
+  --default-transition-timing-function: ease;
+  --default-transition-duration: 160ms;
+}
+
+@theme inline {
+  --font-display: var(--font-michroma), sans-serif;
+  --font-sans: var(--font-sora), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+/* ------------------------------------------------------------------
+   Shared surface utilities (usable with variants, e.g. active:)
+   ------------------------------------------------------------------ */
+@utility bg-gold-fill {
+  background: linear-gradient(135deg, #c9a24a 0%, #e8c875 55%, #c9a24a 100%);
+}
+@utility bg-gold-line {
+  background: linear-gradient(90deg, #c9a24a, #e8c875);
+}
+@utility shadow-gold-button {
+  box-shadow:
+    0 0 0 1px rgba(232, 200, 117, 0.5),
+    0 12px 48px rgba(201, 162, 74, 0.35);
+}
+@utility shadow-gold-pressed {
+  box-shadow:
+    0 0 0 1px rgba(232, 200, 117, 0.9),
+    0 0 56px rgba(232, 200, 117, 0.6);
+}
+@utility shadow-glow-pressed {
+  box-shadow: 0 0 32px rgba(232, 200, 117, 0.45);
+}
+@utility shadow-glow-pressed-strong {
+  box-shadow: 0 0 32px rgba(232, 200, 117, 0.5);
+}
+@utility shadow-glow-pressed-sm {
+  box-shadow: 0 0 28px rgba(232, 200, 117, 0.5);
+}
+@utility shadow-row-pressed {
+  box-shadow: 0 0 28px rgba(232, 200, 117, 0.4);
+}
+@utility shadow-glass {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 32px rgba(201, 162, 74, 0.05);
+}
+@utility shadow-glass-float {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 32px rgba(201, 162, 74, 0.05),
+    0 20px 60px rgba(0, 0, 0, 0.45);
+}
+@utility shadow-card {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+@utility backdrop-glass {
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+}
+@utility backdrop-glass-heavy {
+  -webkit-backdrop-filter: blur(36px) saturate(140%);
+  backdrop-filter: blur(36px) saturate(140%);
+}
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Keyframes (names and values from the design)
+   ------------------------------------------------------------------ */
+@keyframes kSweep {
+  0% {
+    transform: translateX(-140%) rotate(14deg);
+  }
+  55%,
+  100% {
+    transform: translateX(520%) rotate(14deg);
+  }
+}
+@keyframes kRipple {
+  0% {
+    transform: scale(0.22);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+@keyframes kSwipe {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(124px);
+  }
+}
+@keyframes kBreath {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes kScrollCue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(46px);
+    opacity: 0;
+  }
+}
+@keyframes kScreenIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes kScreenOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Base (matches the design's root styles)
+   ------------------------------------------------------------------ */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+  line-height: normal;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------
+   Screen crossfades between routes (React <ViewTransition>)
+   Old screen fades out and new screen fades in, each with the duration the
+   design gives that screen (Home 900 ms, Experience 800 ms, Models and
+   Showrooms 700 ms).
+   ------------------------------------------------------------------ */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(.screen-700) {
+  animation: 700ms ease both kScreenOut;
+}
+::view-transition-new(.screen-700) {
+  animation: 700ms ease both kScreenIn;
+}
+::view-transition-old(.screen-800) {
+  animation: 800ms ease both kScreenOut;
+}
+::view-transition-new(.screen-800) {
+  animation: 800ms ease both kScreenIn;
+}
+::view-transition-old(.screen-900) {
+  animation: 900ms ease both kScreenOut;
+}
+::view-transition-new(.screen-900) {
+  animation: 900ms ease both kScreenIn;
+}
+::view-transition-group(.screen-700),
+::view-transition-group(.screen-800),
+::view-transition-group(.screen-900) {
+  animation-duration: 900ms;
+}
+
+/* The global chrome (logo, nav) stays on top and does not animate. */
+::view-transition-group(kiosk-logo),
+::view-transition-group(kiosk-nav) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(kiosk-logo),
+::view-transition-old(kiosk-nav) {
+  display: none;
+}
+::view-transition-new(kiosk-logo),
+::view-transition-new(kiosk-nav) {
+  animation: none;
+}
