@@ -16,7 +16,7 @@ export function ExperienceModelBadge({ model, onBack }: ExperienceModelBadgeProp
         <ArrowLeftIcon size={30} />
       </CircleIconButton>
       <div className="flex flex-col gap-[6px]">
-        <div className="font-display text-[40px] leading-none whitespace-nowrap">{model.name}</div>
+        <div className="font-display text-[40px] leading-none whitespace-nowrap">{model.fullName}</div>
         <div className="flex items-center gap-[10px] text-[22px] text-ink-2">
           <AccentDot colour={model.accent} size={14} />
           {model.colourName}

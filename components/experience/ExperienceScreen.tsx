@@ -84,12 +84,12 @@ export function ExperienceScreen({ modelIndex }: { modelIndex: number }) {
         >
           <ModelStepButton
             direction="prev"
-            targetName={MODELS[wrapModelIndex(modelIndex - 1)].name}
+            targetName={MODELS[wrapModelIndex(modelIndex - 1)].fullName}
             onClick={actions.guard(() => actions.stepExperienceModel(modelIndex, -1))}
           />
           <ModelStepButton
             direction="next"
-            targetName={MODELS[wrapModelIndex(modelIndex + 1)].name}
+            targetName={MODELS[wrapModelIndex(modelIndex + 1)].fullName}
             onClick={actions.guard(() => actions.stepExperienceModel(modelIndex, 1))}
           />
           <ViewTimeControls
