@@ -18,10 +18,10 @@ export const KIOSK_TIMINGS = {
   dipSwitchMs: 380,
   /** design: dip releases 80 ms after the switch (460 ms total) */
   dipReleaseMs: 80,
-  /** design: simulated loading step */
-  loadingStepMs: 150,
   /** design: pause at 100 % before leaving 01 Loading */
   loadingDoneDelayMs: 1200,
+  /** chosen: leave 01 Loading if downloads make no progress for 60 s (they continue in the background) */
+  loadingStallMs: 60_000,
   /** design: Home counts as "scrolled" (idle timer active) past 40 px */
   homeScrolledPx: 40,
 } as const;

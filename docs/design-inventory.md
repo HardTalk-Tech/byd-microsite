@@ -270,7 +270,7 @@ Sizes are the rendered size at 1920×1080.
 
 - Test-drive form iframe overlay ("Open form here" has no handler in the design).
 - `not-found` page (unknown model slug).
-- Later stages: offline admin panel, "Restarting…" error screen, real download progress.
+- Later stages: kiosk status screen, "Restarting…" error screen, real download progress.
 
 ---
 
@@ -607,3 +607,55 @@ white Dolphin photo; the official grey Dolphin was kept because it matches its l
 **Still needed:** higher-resolution transparent cut-outs (and better ones for Sealion 5 /
 Atto 2), ideally in the colours shown on the kiosk; Home images
 (blade battery, e-platform, line-up) and video posters are still placeholders.
+
+---
+
+## 18. Stages 2–5 (responsive layout, Home redesign, offline, app, kiosk)
+
+**Responsive canvas** (`lib/kiosk/useStage.ts`, `components/ui/KioskStage.tsx`)
+- Width stays 1920 design px; height follows the screen shape: `1920 × vh / vw`, clamped to
+  **1080–1280** (16:9 → 1080, kiosk 4'2" × 2'5" ≈ 1.72:1 → 1116, 16:10 → 1200). Outside
+  that range the canvas fits with thin bars; nothing is cropped.
+- CSS vars `--stage-h` (canvas height) and `--stage-shift` (half the extra height).
+- A tiny inline script in `<head>` (`STAGE_BOOT_SCRIPT`, `lib/kiosk/stage-math.ts`) sizes the
+  canvas before the first paint, so nothing moves when React takes over (layout shift 0).
+  `DesignFrame` keeps the design's 1080-tall layouts centred; edge-anchored parts (rail,
+  contact row, QR, bars) stay on the edges.
+
+**Media fallbacks** – links are never shown to visitors.
+- Experience: the model's cut-out on its accent glow + slow gold sweep under each video
+  (`VideoBackdrop`); a failing link retries once, then stays on the cut-out.
+- Home hero: BYD logo on dark; Blade Battery: the battery photo.
+- `?debug=1` shows the developer labels (`?debug=0` hides them; per tab).
+- The Details panel's Feature video was removed.
+
+**02 Home after the hero** (all copy marked `REVIEW` in `content/home-content.ts`)
+1. *Blade Battery* – full-width video (`content/site-videos.ts` → `bladeBattery`) over the
+   battery photo, dark gradients, three glass cards.
+2. *Interactive chassis* – `home/chassis.webp`; 4 parts traced as polygons
+   (`CHASSIS_PARTS`). Tap a part, its marker or its row: that part shows in full colour with
+   a gold glow and ripples, the rest dims; glass info card "0X / 04".
+3. *In every BYD* – unchanged.
+4. *Find your BYD* – line-up of all nine cut-outs on a gold horizon.
+
+**Offline (Stage 3)** – `public/sw.js`, `lib/offline/*`
+- `byd-shell-v2`: pages + RSC payloads (network-first 3 s), `/_next/static` (only files the server marks immutable, so never in dev), `/media`,
+  `/brand`, `/icons` (cache-first). `byd-media-v1`: videos, written only by the page,
+  served by the worker with Range support. Keys drop Firebase's `token`.
+- First launch: 01 Loading shows "X of N videos ready" (real links only; dummies skipped).
+  No progress for **60 s** (chosen) → the app opens and downloads continue.
+- `contentVersion` change → download new links only, then delete unused ones.
+- Kiosk status screen (read-only): tap the BYD logo 5 times within 3 s. Shows videos saved
+  x of N, network and content version; no PIN, no buttons.
+
+**App and link previews (Stage 4)** – `app/manifest.ts` (fullscreen, landscape),
+icons from the logo (`scripts/build-icons.mjs`), titles "%s | BYD Sri Lanka",
+1200×630 previews for the site and each model (Michroma, cut-out, accent glow),
+`robots.txt`, `sitemap.xml`. Site URL from `NEXT_PUBLIC_SITE_URL`.
+
+**Kiosk (Stage 5)** – no context menu, selection, image drag, overscroll or zoom
+(`KioskGuards` + CSS); screen wake lock; error → "Restarting…" → Home after 5 s;
+blur capped at 16 px with a solid fallback; reduced-motion stops the decorative loops;
+status screen and test-drive form load on first open; `?autotour=1` soak-test tour.
+
+Setup and operations: `docs/kiosk-setup.md`. Media status: `docs/assets.md`.

@@ -1,9 +1,12 @@
 "use client";
 
-import { SITE_SETTINGS } from "@/content/site-settings";
+import { SITE_VIDEO_LINKS } from "@/content/site-videos";
+import { placeholderLabel } from "@/lib/media/media-url";
+import { siteVideoUrl } from "@/lib/media/site-video";
 import { useKiosk } from "@/lib/kiosk/KioskProvider";
 import { GoldButton } from "@/components/ui/GoldButton";
 import { MediaVideo } from "@/components/ui/MediaVideo";
+import { VideoBackdrop } from "@/components/ui/VideoBackdrop";
 import { ScrollCue } from "./ScrollCue";
 
 /** 02 Home – first section: showreel, headline, Explore Models, scroll cue. */
@@ -11,14 +14,11 @@ export function HomeHero({ onScrollNext }: { onScrollNext: () => void }) {
   const { actions } = useKiosk();
 
   return (
-    <section className="relative h-[1080px] snap-start">
-      <div className="absolute inset-0">
-        <MediaVideo
-          path={SITE_SETTINGS.media.showreel}
-          posterPath={SITE_SETTINGS.media.showreelPoster}
-          tint="#C9A24A"
-        />
-      </div>
+    <section className="relative h-[var(--stage-h)] snap-start">
+      <MediaVideo
+        src={siteVideoUrl("heroShowreel")}
+        fallback={<VideoBackdrop variant="logo" label={placeholderLabel("video", SITE_VIDEO_LINKS.heroShowreel)} />}
+      />
       <div
         className="pointer-events-none absolute inset-0"
         style={{

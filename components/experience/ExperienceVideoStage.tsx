@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { experienceVideo } from "@/lib/media/experience-video";
 import { mediaUrl, placeholderLabel } from "@/lib/media/media-url";
 import type { ClipKey, Model } from "@/lib/types/content";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { VideoBackdrop } from "@/components/ui/VideoBackdrop";
 
 /** Colour wash the design lays over each clip. */
 const CLIP_OVERLAY: Record<ClipKey, string> = {
@@ -41,8 +41,8 @@ interface ExperienceVideoStageProps {
  * A new clip loads into the hidden slot, jumps to the visible clip's
  * currentTime (same drive, another camera), and fades in once it can play,
  * so there is never a black frame. Placeholders swap straight away.
- * The labelled placeholder sits under every video: it shows while a link is slow to
- * load, and stays when a link fails (e.g. a dummy link).
+ * The car cut-out (VideoBackdrop) sits under every video: it shows while a link is slow
+ * to load, and stays when a link fails after one retry (e.g. a dummy link).
  */
 export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps) {
   const [stage, setStage] = useState<StageState>({
@@ -54,6 +54,8 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
   /** URLs that failed to load; their slots show the placeholder instead. */
   const [failed, setFailed] = useState<ReadonlySet<string>>(() => new Set());
   const videos = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
+  /** Links that already had their one retry. */
+  const retried = useRef<Set<string>>(new Set());
 
   const playableUrl = (c: ClipKey) => {
     const { url } = experienceVideo(model, c);
@@ -120,8 +122,17 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
     return () => clearTimeout(timer);
   }, [active, stage.pending]);
 
-  /** A slot's video failed: remember it, and if it was about to fade in, show its placeholder now. */
+  /**
+   * A slot's video failed. First time: retry once (a network blip shouldn't lose the clip).
+   * Second time: give up on that link – the backdrop (car cut-out) stays, and if the clip
+   * was about to fade in, switch to it now so the tap still gets a response.
+   */
   const handleError = (slot: SlotIndex, url: string) => {
+    if (!retried.current.has(url)) {
+      retried.current.add(url);
+      videos.current[slot]?.load();
+      return;
+    }
     setFailed((f) => new Set(f).add(url));
     setStage((s) => (s.pending === slot ? { ...s, active: slot, pending: null } : s));
   };
@@ -135,11 +146,13 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
         return (
           <div
             key={slot}
+            data-clip={`${model.slug}-${slotClip}`}
             className="absolute inset-0 transition-opacity duration-900"
             style={{ opacity: stage.active === slot ? 1 : 0 }}
           >
-            {/* Always underneath: shows until the video has a frame (slow / dummy links never show black). */}
-            <MediaPlaceholder kind="video" label={placeholderLabel("video", source)} tint={model.accent} />
+            {/* Always underneath: the car cut-out shows until the video has a frame, and stays if it fails.
+                Links are never shown to visitors (only with ?debug=1). */}
+            <VideoBackdrop variant="car" model={model} label={placeholderLabel("video", source)} />
             {url && (
               <video
                 key={url}

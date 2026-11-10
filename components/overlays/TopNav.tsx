@@ -1,9 +1,14 @@
 "use client";
 
+import { useRef } from "react";
 import { useKiosk } from "@/lib/kiosk/KioskProvider";
 import type { ScreenKey } from "@/lib/kiosk/KioskProvider";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { GoldButton } from "@/components/ui/GoldButton";
+
+/** Tapping the logo this many times within STATUS_WINDOW_MS opens the kiosk status screen. */
+const STATUS_TAPS = 5;
+const STATUS_WINDOW_MS = 3000;
 
 const NAV_ITEMS: ReadonlyArray<{ screen: ScreenKey; label: string }> = [
   { screen: "home", label: "Home" },
@@ -15,6 +20,16 @@ const NAV_ITEMS: ReadonlyArray<{ screen: ScreenKey; label: string }> = [
 /** Global chrome: logo (top-left) and the glass pill navigation (top-centre). */
 export function TopNav() {
   const { state, screen, actions } = useKiosk();
+  const logoTaps = useRef<number[]>([]);
+
+  const onLogoTap = () => {
+    const now = Date.now();
+    logoTaps.current = [...logoTaps.current.filter((t) => now - t < STATUS_WINDOW_MS), now];
+    if (logoTaps.current.length >= STATUS_TAPS) {
+      logoTaps.current = [];
+      actions.openStatus();
+    }
+  };
 
   const onExperience = screen === "experience";
   const visible =
@@ -25,12 +40,16 @@ export function TopNav() {
 
   return (
     <>
-      <div
-        className="pointer-events-none absolute left-[72px] top-12 transition-opacity duration-600"
-        style={{ opacity: visible ? 1 : 0, viewTransitionName: "kiosk-logo" }}
+      {/* The logo does nothing on a single tap; 5 quick taps open the kiosk status screen (for staff). */}
+      <button
+        type="button"
+        aria-label="BYD"
+        onClick={onLogoTap}
+        className="absolute left-[72px] top-12 cursor-default border-0 bg-transparent p-0 transition-opacity duration-600"
+        style={{ opacity: visible ? 1 : 0, pointerEvents: visible ? "auto" : "none", viewTransitionName: "kiosk-logo" }}
       >
         <BrandLogo width={200} height={64} align="left" />
-      </div>
+      </button>
 
       <nav
         aria-label="Main"

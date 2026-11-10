@@ -7,7 +7,9 @@ import { SWIPE } from "@/lib/kiosk/timings";
 import { pad2 } from "@/lib/style/rgba";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { GoldButton } from "@/components/ui/GoldButton";
+import { DesignFrame } from "@/components/ui/DesignFrame";
 import { GridBackdrop } from "@/components/ui/GridBackdrop";
+import { SweepShine } from "@/components/ui/SweepShine";
 import { VariantSelector } from "@/components/ui/VariantSelector";
 import { ModelCarStage } from "./ModelCarStage";
 import { ModelIntro } from "./ModelIntro";
@@ -31,6 +33,9 @@ export function ModelsScreen() {
   return (
     <div data-screen-label="03 Models" className="absolute inset-0 bg-kiosk-bg">
       <GridBackdrop lineAlpha={0.025} mask="ellipse at 62% 40%, #000 0%, transparent 65%" />
+      <SweepShine variant="screen" />
+
+      <DesignFrame>
       <ModelCarStage selectedIndex={selected} swipeHandlers={swipe} />
 
       {!state.swipeHintSeen && (
@@ -68,6 +73,7 @@ export function ModelsScreen() {
           Full details
         </GlassButton>
       </div>
+      </DesignFrame>
 
       <ModelRail selectedIndex={selected} onSelect={actions.selectModel} />
     </div>

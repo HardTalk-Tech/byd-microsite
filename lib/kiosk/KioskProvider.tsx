@@ -6,10 +6,16 @@ import { usePathname, useRouter } from "next/navigation";
 import { DEFAULT_MODEL_INDEX, MODELS, wrapModelIndex } from "@/content/models";
 import { SITE_SETTINGS } from "@/content/site-settings";
 import { GALLERY_SIZE } from "@/lib/media/media-paths";
-import { CLIP_KEYS } from "@/lib/types/content";
 import type { TimeKey, ViewKey } from "@/lib/types/content";
 import { KIOSK_TIMINGS } from "@/lib/kiosk/timings";
-import { useStageScale } from "@/lib/kiosk/useStageScale";
+import {
+  EMPTY_OFFLINE_STATUS,
+  offlineSupported,
+  removeServiceWorker,
+  runOfflineSetup,
+} from "@/lib/offline/offline-setup";
+import type { OfflineStatus } from "@/lib/offline/offline-setup";
+import { useStage } from "@/lib/kiosk/useStage";
 
 /** Route-level screens from the design. */
 export type ScreenKey = "home" | "models" | "experience" | "showrooms";
@@ -32,13 +38,18 @@ function screenFromPath(pathname: string): ScreenKey | null {
   return null;
 }
 
-/** Total clips the 01 Loading screen counts (4 per model = 36). */
-export const LOADING_TOTAL = MODELS.length * CLIP_KEYS.length;
 
 export interface KioskState {
   /** 01 Loading overlay visible. */
   loading: boolean;
+  /** Videos saved for offline use so far (01 Loading progress). */
   loadedCount: number;
+  /** Videos to save in total (real links only). */
+  loadTotal: number;
+  /** Offline readiness, for the kiosk status screen. */
+  offline: OfflineStatus;
+  /** Kiosk status screen open (5 taps on the logo). */
+  statusOpen: boolean;
   /** Selected model (shared by 03 Models, 04 Experience and the nav). */
   modelIndex: number;
   /** Selected variant of the selected model (resets to 0 when the model changes). */
@@ -72,6 +83,9 @@ export interface KioskState {
 const INITIAL_STATE: KioskState = {
   loading: true,
   loadedCount: 0,
+  loadTotal: 0,
+  offline: EMPTY_OFFLINE_STATUS,
+  statusOpen: false,
   modelIndex: DEFAULT_MODEL_INDEX,
   variantIndex: 0,
   view: "exterior",
@@ -128,12 +142,19 @@ export interface KioskActions {
   selectShowroom: (index: number) => void;
   selectHotspot: (index: number) => void;
   setHomeScrolled: (scrolled: boolean) => void;
+  openStatus: () => void;
+  closeStatus: () => void;
 }
 
 interface KioskContextValue {
   state: KioskState;
   screen: ScreenKey | null;
+  /** Screen px per design px. */
   scale: number;
+  /** Canvas height in design px (1080–1280, follows the screen shape). */
+  stageHeight: number;
+  /** False until the window was measured on the client (canvas then sized by CSS variables). */
+  stageMeasured: boolean;
   actions: KioskActions;
 }
 
@@ -149,7 +170,7 @@ export function KioskProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const screen = screenFromPath(pathname);
-  const scale = useStageScale();
+  const { scale, height: stageHeight, measured: stageMeasured } = useStage();
   const [state, setState] = useState<KioskState>(INITIAL_STATE);
 
   // Mirrors for timers and event handlers (updated after every commit).
@@ -268,27 +289,61 @@ export function KioskProvider({ children }: { children: ReactNode }) {
         markTouch();
         if (stateRef.current.homeScrolled !== scrolled) patch({ homeScrolled: scrolled });
       },
+      openStatus: () => patch({ statusOpen: true }),
+      closeStatus: () => patch({ statusOpen: false }),
     };
   }, [patch, router]);
 
-  // 01 Loading – simulated progress, as in the design (replaced by real downloads in Stage 3).
+  // 01 Loading – first launch: cache the app and save the videos for offline use
+  // (real progress). In development (no service worker) the loading screen is skipped.
   useEffect(() => {
-    let count = 0;
+    if (!offlineSupported()) {
+      if (process.env.NODE_ENV !== "production") void removeServiceWorker().catch(() => undefined);
+      // Hide the loading screen on the next tick (after the first paint).
+      const t = setTimeout(() => patch({ loading: false }), 0);
+      return () => clearTimeout(t);
+    }
+    let cancelled = false;
     let doneTimer: ReturnType<typeof setTimeout> | undefined;
-    const stepTimer = setInterval(() => {
-      count = Math.min(LOADING_TOTAL, count + 1);
-      patch({ loadedCount: count });
-      if (count >= LOADING_TOTAL) {
-        clearInterval(stepTimer);
-        doneTimer = setTimeout(() => {
+    let stallTimer: ReturnType<typeof setTimeout> | undefined;
+    let showedLoading = false;
+    // Never hold visitors on 01 Loading because of a stalled download: if progress
+    // doesn't move for a while, open the app and keep downloading in the background.
+    const armStallGuard = () => {
+      clearTimeout(stallTimer);
+      stallTimer = setTimeout(() => {
+        if (!cancelled) patch({ loading: false });
+      }, KIOSK_TIMINGS.loadingStallMs);
+    };
+    runOfflineSetup({
+      onLoadingStart: (total, alreadyCached) => {
+        showedLoading = true;
+        armStallGuard();
+        if (!cancelled) patch({ loadTotal: total, loadedCount: alreadyCached });
+      },
+      onProgress: (cached) => {
+        armStallGuard();
+        if (!cancelled) patch((s) => ({ loadedCount: cached, offline: { ...s.offline, cached } }));
+      },
+    })
+      .then((offline) => {
+        clearTimeout(stallTimer);
+        if (cancelled) return;
+        patch((s) => ({ offline, loadedCount: Math.max(s.loadedCount, offline.cached), loadTotal: offline.total }));
+        const finish = () => {
           lastTouchRef.current = Date.now();
           patch({ loading: false });
-        }, KIOSK_TIMINGS.loadingDoneDelayMs);
-      }
-    }, KIOSK_TIMINGS.loadingStepMs);
+        };
+        if (showedLoading) doneTimer = setTimeout(finish, KIOSK_TIMINGS.loadingDoneDelayMs);
+        else finish();
+      })
+      .catch(() => {
+        if (!cancelled) patch({ loading: false });
+      });
     return () => {
-      clearInterval(stepTimer);
+      cancelled = true;
       clearTimeout(doneTimer);
+      clearTimeout(stallTimer);
     };
   }, [patch]);
 
@@ -303,7 +358,7 @@ export function KioskProvider({ children }: { children: ReactNode }) {
     const id = setInterval(() => {
       const s = stateRef.current;
       const current = screenRef.current;
-      const resting = current === "home" && !s.homeScrolled && !s.modalOpen;
+      const resting = current === "home" && !s.homeScrolled && !s.modalOpen && !s.statusOpen;
 
       if (s.loading || current === null || resting) {
         if (resting) lastTouchRef.current = Date.now();
@@ -319,6 +374,7 @@ export function KioskProvider({ children }: { children: ReactNode }) {
       );
 
       if (elapsed >= timeout) {
+        patch({ statusOpen: false });
         actions.goTo("home");
         return;
       }
@@ -342,7 +398,10 @@ export function KioskProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(id);
   }, [actions, patch]);
 
-  const value = useMemo(() => ({ state, screen, scale, actions }), [state, screen, scale, actions]);
+  const value = useMemo(
+    () => ({ state, screen, scale, stageHeight, stageMeasured, actions }),
+    [state, screen, scale, stageHeight, stageMeasured, actions],
+  );
 
   return <KioskContext.Provider value={value}>{children}</KioskContext.Provider>;
 }

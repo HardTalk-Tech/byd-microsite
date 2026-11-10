@@ -9,13 +9,15 @@ import type { MapCluster, Showroom } from "@/lib/types/content";
  * - address: Galle as supplied by the client; the others are the street at the map pin
  *   (to confirm with the client).
  * - province: from the coordinates (Natural Earth district boundaries).
- * - hours: not supplied yet (the listings only give a Saturday opening time) – TBC.
+ * - hours: 8:00 AM – 6:00 PM for every location for now (client); change any one
+ *   location by editing its own `hours` line.
  *
  * Listed alphabetically by name ("Colombo – Altair" … "Ratnapura").
  */
 
 const MAIN_PHONE = "+94 112 125 125";
-const HOURS_TBC = "TBC";
+/** Default opening hours (client, for now). Each showroom can override its own `hours`. */
+const DEFAULT_HOURS = "8:00 AM – 6:00 PM";
 
 export const SHOWROOMS: readonly Showroom[] = [
   {
@@ -29,7 +31,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "left" },
     address: "Altair, Sir James Peiris Mawatha, Colombo 02",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/GSNKogMeswaonQFK6",
   },
   {
@@ -43,7 +45,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "left" },
     address: "Union Place, Colombo 02",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/GzGS6Tga8d9L72qi9",
   },
   {
@@ -57,7 +59,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "left" },
     address: "Vauxhall Street, Colombo 02",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/JVW6oSjmNA6XsZ998",
   },
   {
@@ -69,7 +71,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "right" },
     address: "Southern Highway, Nugadhuwa entrance road, Galle",
     phone: "+94 77 310 4000",
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/7EE2Y2BdKzFCEjx67",
   },
   {
@@ -81,7 +83,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "right" },
     address: "Katugastota Road, Kandy",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/geNFUMza4WvqDgxC7",
   },
   {
@@ -93,7 +95,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "left" },
     address: "Kurunegala–Ambepussa Road, Kurunegala",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/1WWSrh7XT958PbbU7",
   },
   {
@@ -106,7 +108,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "left", dy: 14 },
     address: "Galle Road, Moratuwa",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/orUBii7U8LMFt76R9",
   },
   {
@@ -119,7 +121,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     address: "Colombo–Puttalam Road, Negombo",
     // No number in the Negombo listing; the main hotline is shown (to confirm).
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/KiHdNpKAxCo2ueEV7",
   },
   {
@@ -131,7 +133,7 @@ export const SHOWROOMS: readonly Showroom[] = [
     label: { side: "right" },
     address: "Ratnapura–Wellawaya Road, Ratnapura",
     phone: MAIN_PHONE,
-    hours: HOURS_TBC,
+    hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/HNcTGDJTLgqGBM2z5",
   },
 ];

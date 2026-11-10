@@ -6,8 +6,8 @@ import type { ClipKey } from "@/lib/types/content";
  * ⚠ DUMMY LINKS – replace each one with the real video URL.
  *   Format: MP4 (H.264), 1920 × 1080, no audio, ~10 s loop. See DEVELOPMENT_PLAN.md §2.3.
  *
- * - A link that fails to load (like these dummies) shows the labelled placeholder instead,
- *   so the screen never goes black.
+ * - While a link loads, or if it fails (like these dummies), the car cut-out shows instead,
+ *   so the screen never goes black and links are never shown to visitors (?debug=1 shows them).
  * - An empty link ("") falls back to the model's storage path (Firebase, Stage 2).
  * - All variants of a model share these videos.
  */

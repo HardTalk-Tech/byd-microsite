@@ -30,7 +30,7 @@ export function TestDriveModal() {
         aria-modal="true"
         aria-label="Book Test Drive"
         onClick={(e) => e.stopPropagation()}
-        className="absolute left-[420px] top-[250px] flex h-[620px] w-[1080px] items-center gap-16 overflow-hidden rounded-[36px] border border-[rgba(201,162,74,0.45)] bg-[rgba(22,23,26,0.72)] p-16 backdrop-glass-heavy transition-transform duration-500 ease-kiosk"
+        className="absolute left-[420px] top-[calc(250px+var(--stage-shift))] flex h-[620px] w-[1080px] items-center gap-16 overflow-hidden rounded-[36px] border border-[rgba(201,162,74,0.45)] bg-[rgba(22,23,26,0.72)] p-16 backdrop-glass-heavy transition-transform duration-500 ease-kiosk"
         style={{
           transform: `scale(${open ? 1 : 0.96})`,
           boxShadow:

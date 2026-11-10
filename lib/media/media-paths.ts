@@ -24,6 +24,5 @@ export function modelMediaPaths(slug: string): ModelMedia {
       "interior-night": clip("interior-night", "webp"),
     },
     gallery: Array.from({ length: GALLERY_SIZE }, (_, i) => `${base}-gallery-${i + 1}.webp`),
-    featureVideo: `${base}-feature.mp4`,
   };
 }
