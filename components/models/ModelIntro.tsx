@@ -1,8 +1,7 @@
 import { MODELS } from "@/content/models";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 
 /**
- * 03 Models – eyebrow and model name. Layers crossfade and rise on change.
+ * 03 Models – model name. Layers crossfade and rise on change.
  * (The design's colour dot + colour name were removed at the client's request.)
  */
 export function ModelIntro({ selectedIndex }: { selectedIndex: number }) {
@@ -21,8 +20,7 @@ export function ModelIntro({ selectedIndex }: { selectedIndex: number }) {
               transition: "opacity 700ms ease, transform 800ms var(--ease-kiosk)",
             }}
           >
-            <Eyebrow>BYD Electric</Eyebrow>
-            <h1 className="font-display text-[84px] leading-none whitespace-nowrap text-ink">{m.name}</h1>
+            <h1 className="font-display text-[84px] leading-none whitespace-nowrap text-ink">{m.fullName}</h1>
           </div>
         );
       })}

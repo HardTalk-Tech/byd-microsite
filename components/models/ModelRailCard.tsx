@@ -39,7 +39,7 @@ export function ModelRailCard({ model, selected, onClick }: ModelRailCardProps) 
         className="text-left text-[22px] whitespace-nowrap transition-colors duration-400"
         style={{ fontWeight: selected ? 600 : 400, color: selected ? "#F2F0EB" : "#9A9DA5" }}
       >
-        {model.name}
+        {model.fullName}
       </div>
       <div
         className="absolute inset-x-4 bottom-[-1px] h-[3px] rounded-[2px] bg-gold-line shadow-[0_0_14px_rgba(232,200,117,0.7)] transition-opacity duration-400"
