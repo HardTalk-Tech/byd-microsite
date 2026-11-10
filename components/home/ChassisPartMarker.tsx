@@ -1,25 +1,27 @@
 import { pad2 } from "@/lib/style/rgba";
-import type { PlatformHotspot } from "@/lib/types/content";
 
-interface PlatformHotspotMarkerProps {
-  hotspot: PlatformHotspot;
+interface ChassisPartMarkerProps {
   index: number;
+  title: string;
+  /** Centre in the chassis stage (px). */
+  x: number;
+  y: number;
   selected: boolean;
   onClick: () => void;
 }
 
-/** Numbered marker on the e-Platform image (80 px touch area, 52 px circle). */
-export function PlatformHotspotMarker({ hotspot, index, selected, onClick }: PlatformHotspotMarkerProps) {
+/** Numbered marker on a chassis part (80 px touch area, 52 px circle). */
+export function ChassisPartMarker({ index, title, x, y, selected, onClick }: ChassisPartMarkerProps) {
   return (
     <button
       type="button"
-      aria-label={`${pad2(index + 1)} ${hotspot.title}`}
+      aria-label={`${pad2(index + 1)} ${title}`}
       aria-pressed={selected}
       onClick={onClick}
       className="absolute flex h-20 w-20 items-center justify-center border-0 bg-transparent p-0 transition-[scale] duration-160 active:scale-94"
-      style={{ left: hotspot.x - 40, top: hotspot.y - 40 }}
+      style={{ left: x - 40, top: y - 40 }}
     >
-      <div
+      <span
         className="flex h-[52px] w-[52px] items-center justify-center rounded-full border-[1.5px] border-solid border-gold-light font-mono text-[22px] transition-all duration-400"
         style={{
           background: selected ? "linear-gradient(135deg,#C9A24A,#E8C875)" : "rgba(10,10,11,0.75)",
@@ -28,7 +30,7 @@ export function PlatformHotspotMarker({ hotspot, index, selected, onClick }: Pla
         }}
       >
         {pad2(index + 1)}
-      </div>
+      </span>
     </button>
   );
 }

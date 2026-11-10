@@ -8,7 +8,6 @@ import type { Model } from "@/lib/types/content";
 import { AccentDot } from "@/components/ui/AccentDot";
 import { CircleIconButton } from "@/components/ui/CircleIconButton";
 import { CloseIcon } from "@/components/ui/icons/CloseIcon";
-import { MediaVideo } from "@/components/ui/MediaVideo";
 import { QrCode } from "@/components/ui/QrCode";
 import { VariantSelector } from "@/components/ui/VariantSelector";
 import { DetailsGallery } from "./DetailsGallery";
@@ -86,13 +85,6 @@ export function DetailsPanel({
         <div className="flex flex-col gap-[18px]">
           <SectionLabel>Gallery</SectionLabel>
           <DetailsGallery model={model} onOpen={onOpenGallery} />
-        </div>
-
-        <div className="flex flex-col gap-[18px]">
-          <SectionLabel>Feature</SectionLabel>
-          <div className="relative h-[360px] overflow-hidden rounded-[20px]">
-            <MediaVideo path={model.media.featureVideo} tint={model.accent} radius={20} />
-          </div>
         </div>
 
         <div className="flex items-center gap-9 rounded-3xl border border-[rgba(201,162,74,0.35)] bg-[rgba(201,162,74,0.06)] p-7">

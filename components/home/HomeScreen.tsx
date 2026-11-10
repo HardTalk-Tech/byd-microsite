@@ -3,16 +3,15 @@
 import { useEffect, useRef } from "react";
 import { useKiosk } from "@/lib/kiosk/KioskProvider";
 import { KIOSK_TIMINGS } from "@/lib/kiosk/timings";
-import { STAGE_HEIGHT } from "@/lib/kiosk/useStageScale";
 import { BladeBatterySection } from "./BladeBatterySection";
-import { EPlatformSection } from "./EPlatformSection";
+import { ChassisSection } from "./ChassisSection";
 import { FindYourBydSection } from "./FindYourBydSection";
 import { HomeHero } from "./HomeHero";
 import { InEveryBydSection } from "./InEveryBydSection";
 
 /** 02 Home – vertically scrolling start / attract screen. */
 export function HomeScreen() {
-  const { state, actions } = useKiosk();
+  const { state, actions, stageHeight } = useKiosk();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { homeScrollToken } = state;
 
@@ -29,10 +28,10 @@ export function HomeScreen() {
       className="scrollbar-none absolute inset-0 snap-y snap-proximity overflow-x-hidden overflow-y-auto bg-kiosk-bg"
     >
       <HomeHero
-        onScrollNext={() => scrollRef.current?.scrollTo({ top: STAGE_HEIGHT, behavior: "smooth" })}
+        onScrollNext={() => scrollRef.current?.scrollTo({ top: stageHeight, behavior: "smooth" })}
       />
       <BladeBatterySection />
-      <EPlatformSection />
+      <ChassisSection />
       <InEveryBydSection />
       <FindYourBydSection />
     </div>

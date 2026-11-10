@@ -13,7 +13,7 @@ export function IdleWarning() {
     <div
       role="status"
       inert={!visible}
-      className="absolute left-1/2 top-36 flex items-center gap-7 rounded-full border border-[rgba(201,162,74,0.45)] bg-[rgba(22,23,26,0.82)] py-[14px] pr-[14px] pl-9 shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_30px_rgba(201,162,74,0.06)] backdrop-blur-[24px]"
+      className="absolute left-1/2 top-36 flex items-center gap-7 rounded-full border border-[rgba(201,162,74,0.45)] bg-[rgba(22,23,26,0.82)] py-[14px] pr-[14px] pl-9 shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_30px_rgba(201,162,74,0.06)] backdrop-blur-[16px]"
       style={{
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? "auto" : "none",

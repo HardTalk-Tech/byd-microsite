@@ -62,8 +62,6 @@ export interface ModelMedia {
   posters: Record<ClipKey, string>;
   /** 4 gallery images (04b Details Panel, 04c Gallery Fullscreen). */
   gallery: string[];
-  /** Feature video (04b Details Panel). */
-  featureVideo: string;
 }
 
 export interface Model {
@@ -122,26 +120,17 @@ export interface BatteryPoint {
   description: string;
 }
 
-export interface PlatformHotspot {
+/** A tappable part of the chassis image on 02 Home. */
+export interface ChassisPart {
   title: string;
   description: string;
-  /** Marker centre in px inside the e-Platform image box. */
-  x: number;
-  y: number;
+  /** Outline of the part, in px of the chassis image (CHASSIS_IMAGE.width × height). */
+  outline: ReadonlyArray<readonly [number, number]>;
 }
 
 export interface CommonFeature {
   title: string;
   description: string;
-}
-
-/** Media from storage. (The BYD logo ships with the app in public/brand/.) */
-export interface SiteMedia {
-  showreel: string;
-  showreelPoster: string;
-  bladeBattery: string;
-  ePlatform: string;
-  modelLineup: string;
 }
 
 export interface ContactDetails {
@@ -169,5 +158,4 @@ export interface SiteSettings {
   formIdleTimeoutSeconds: number;
   /** Bump to trigger a media re-download (Stage 3). */
   contentVersion: string;
-  media: SiteMedia;
 }

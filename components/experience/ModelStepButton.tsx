@@ -14,7 +14,7 @@ export function ModelStepButton({ direction, targetName, onClick }: ModelStepBut
   const isPrev = direction === "prev";
   return (
     <div
-      className={`[pointer-events:var(--ctrl-pe)] absolute top-[470px] flex flex-col items-center gap-[14px] ${isPrev ? "left-10" : "right-10"}`}
+      className={`[pointer-events:var(--ctrl-pe)] absolute top-[calc(470px+var(--stage-shift))] flex flex-col items-center gap-[14px] ${isPrev ? "left-10" : "right-10"}`}
     >
       <CircleIconButton
         variant="step"

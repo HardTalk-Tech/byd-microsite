@@ -4,7 +4,6 @@ import type { PointerEvent } from "react";
 import { MODELS } from "@/content/models";
 import { rgba } from "@/lib/style/rgba";
 import { MediaImage } from "@/components/ui/MediaImage";
-import { SweepShine } from "@/components/ui/SweepShine";
 
 interface ModelCarStageProps {
   selectedIndex: number;
@@ -44,7 +43,6 @@ export function ModelCarStage({ selectedIndex, swipeHandlers }: ModelCarStagePro
         className="absolute inset-x-0 top-[611px] h-[110px]"
         style={{ background: "radial-gradient(ellipse 34% 100% at 66% 0%, rgba(255,255,255,0.06), transparent 75%)" }}
       />
-      <SweepShine variant="screen" />
 
       {MODELS.map((m, i) => {
         const offset = i < selectedIndex ? -90 : i > selectedIndex ? 90 : 0;

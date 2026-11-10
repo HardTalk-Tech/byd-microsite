@@ -258,7 +258,7 @@ Use the hand-written service worker and downloader in the **Appendix** as the st
    - If offline with missing assets, show the app anyway with posters/placeholders for missing items, and a small admin-only warning.
 7. **Content updates:** the site settings data has a `contentVersion`. When it changes, download only new/changed URLs, then call `pruneVideos()` (rename to `pruneMedia()`) to delete old ones.
 8. **Persistent storage:** call `navigator.storage.persist()` (already in the downloader).
-9. **Hidden admin panel:** 5 taps in the top-left corner within 3 s, then PIN (from `NEXT_PUBLIC_ADMIN_PIN`). Shows: cached items x/total, storage used/quota, persisted yes/no, online status, content version, and buttons "Re-download missing", "Clear and re-download all", "Reload app".
+9. **Kiosk status screen (read-only, changed from the admin panel at the client's request):** tap the BYD logo in the nav 5 times within 3 s. Shows videos saved x of N, online / offline and the content version. No PIN, no buttons.
 
 ### 3.2 Acceptance criteria – Stage 3
 
@@ -333,7 +333,7 @@ Test with `npm run build && npm start` (the service worker is production-only):
 
 ### 5.4 Deployment notes (write a kiosk setup guide in `docs/`)
 
-- Deploy to Vercel; set env vars `NEXT_PUBLIC_FIREBASE_BUCKET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_PIN`.
+- Deploy to Vercel; set env vars `NEXT_PUBLIC_FIREBASE_BUCKET`, `NEXT_PUBLIC_SITE_URL`.
 - On the kiosk: open the site in Chrome, install the app, let the loading screen reach 100%, then launch the installed app (or `chrome --kiosk --app=https://YOUR-APP.vercel.app`).
 - Disable OS sleep, notifications and auto-updates during the event.
 - Pre-event checklist: admin panel shows 36/36 videos and all images cached; pull the network cable and test every model.

@@ -22,11 +22,4 @@ export const SITE_SETTINGS: SiteSettings = {
   idleTimeoutSeconds: 90,
   formIdleTimeoutSeconds: 300,
   contentVersion: "0.1.0",
-  media: {
-    showreel: "showreel/showreel.mp4",
-    showreelPoster: "showreel/showreel-poster.webp",
-    bladeBattery: "home/blade-battery.webp",
-    ePlatform: "home/e-platform.webp",
-    modelLineup: "home/model-lineup.webp",
-  },
 };

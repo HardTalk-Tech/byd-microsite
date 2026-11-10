@@ -11,7 +11,7 @@ const VARIANTS = {
 export function SweepShine({ variant }: { variant: keyof typeof VARIANTS }) {
   const v = VARIANTS[variant];
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true" data-motion="hide">
       <div
         className="absolute left-0 top-[-50%] h-[200%]"
         style={{

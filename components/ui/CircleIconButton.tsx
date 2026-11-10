@@ -8,7 +8,7 @@ const VARIANTS = {
   /** 76 px back button with gold border (04 Experience). */
   back: "h-[76px] w-[76px] bg-white/5 border-[rgba(201,162,74,0.45)] text-gold-light active:scale-94 active:shadow-[0_0_28px_rgba(232,200,117,0.55)]",
   /** 104 px prev / next over video (blurred glass). */
-  step: "h-[104px] w-[104px] bg-surface-1/50 backdrop-blur-[20px] border-white/12 text-ink active:scale-94 active:border-[rgba(232,200,117,0.8)] active:shadow-glow-pressed-strong",
+  step: "h-[104px] w-[104px] bg-surface-1/50 backdrop-blur-[16px] border-white/12 text-ink active:scale-94 active:border-[rgba(232,200,117,0.8)] active:shadow-glow-pressed-strong",
   /** 104 px prev / next in 04c Gallery Fullscreen. */
   gallery:
     "h-[104px] w-[104px] bg-surface-1/60 border-white/12 text-ink active:scale-94 active:border-[rgba(232,200,117,0.8)] active:shadow-glow-pressed-strong",

@@ -35,10 +35,10 @@ export function GalleryFullscreen({ model, index, onStep, onClose }: GalleryFull
           radius={24}
         />
       </div>
-      <CircleIconButton variant="gallery" label="Previous image" onClick={() => onStep(-1)} className="absolute left-10 top-[488px]">
+      <CircleIconButton variant="gallery" label="Previous image" onClick={() => onStep(-1)} className="absolute left-10 top-[calc(488px+var(--stage-shift))]">
         <ChevronLeftIcon size={40} />
       </CircleIconButton>
-      <CircleIconButton variant="gallery" label="Next image" onClick={() => onStep(1)} className="absolute right-10 top-[488px]">
+      <CircleIconButton variant="gallery" label="Next image" onClick={() => onStep(1)} className="absolute right-10 top-[calc(488px+var(--stage-shift))]">
         <ChevronRightIcon size={40} />
       </CircleIconButton>
       <div className="absolute inset-x-0 bottom-14 flex justify-center text-[22px] tracking-[0.24em] text-ink-2">

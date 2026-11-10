@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { SHOWROOMS } from "@/content/showrooms";
 import { SITE_SETTINGS } from "@/content/site-settings";
 import { useKiosk } from "@/lib/kiosk/KioskProvider";
+import { DesignFrame } from "@/components/ui/DesignFrame";
 import { GridBackdrop } from "@/components/ui/GridBackdrop";
 import { QrCode } from "@/components/ui/QrCode";
 import { ShowroomCard } from "./ShowroomCard";
@@ -34,7 +35,8 @@ export function ShowroomsScreen() {
     >
       <GridBackdrop lineAlpha={0.025} mask="ellipse at 47% 50%, #000 0%, transparent 60%" />
 
-      <div className="absolute left-24 top-[176px] flex flex-col gap-[14px]">
+      <DesignFrame>
+        <div className="absolute left-24 top-[176px] flex flex-col gap-[14px]">
         <h1 className="font-display text-[64px] leading-none">Showrooms</h1>
         <div className="text-[24px] text-ink-4">Tap a pin or a name for details</div>
       </div>
@@ -42,6 +44,9 @@ export function ShowroomsScreen() {
       <ShowroomCard showroom={SHOWROOMS[selected]} />
       <SriLankaMap selectedIndex={selected} onSelect={actions.selectShowroom} />
       <ShowroomList selectedIndex={selected} onSelect={actions.selectShowroom} />
+      </DesignFrame>
+
+      {/* Pinned to the real bottom edge (outside the centred frame). */}
 
       <div className="absolute left-24 bottom-10 flex items-start">
         <ContactItem label="Hotline">

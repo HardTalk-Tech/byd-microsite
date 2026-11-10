@@ -13,7 +13,7 @@ export function ExperienceActions({ onDetails, onBookTestDrive }: ExperienceActi
     <div className="[pointer-events:var(--ctrl-pe)] absolute right-12 bottom-12 flex w-[340px] flex-col gap-[14px]">
       <GlassButton
         onClick={onDetails}
-        className="h-20 gap-[14px] border-white/16 bg-[rgba(22,23,26,0.55)] text-[22px] tracking-[0.2em] backdrop-blur-[24px]"
+        className="h-20 gap-[14px] border-white/16 bg-[rgba(22,23,26,0.55)] text-[22px] tracking-[0.2em] backdrop-blur-[16px]"
       >
         <DetailsIcon size={26} />
         Details
