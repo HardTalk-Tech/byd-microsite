@@ -2,6 +2,7 @@ import type { Model } from "@/lib/types/content";
 import { AccentDot } from "@/components/ui/AccentDot";
 import { CircleIconButton } from "@/components/ui/CircleIconButton";
 import { ArrowLeftIcon } from "@/components/ui/icons/ArrowLeftIcon";
+import { VehicleName } from "@/components/ui/VehicleName";
 
 interface ExperienceModelBadgeProps {
   model: Model;
@@ -16,7 +17,12 @@ export function ExperienceModelBadge({ model, onBack }: ExperienceModelBadgeProp
         <ArrowLeftIcon size={30} />
       </CircleIconButton>
       <div className="flex flex-col gap-[6px]">
-        <div className="font-display text-[40px] leading-none whitespace-nowrap">{model.fullName}</div>
+        <VehicleName
+          model={model}
+          textClassName="font-display text-[40px] leading-none whitespace-nowrap"
+          artworkHeight={28}
+          artworkMaxWidth={245}
+        />
         <div className="flex items-center gap-[10px] text-[22px] text-ink-2">
           <AccentDot colour={model.accent} size={14} />
           {model.colourName}

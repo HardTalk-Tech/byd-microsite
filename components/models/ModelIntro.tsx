@@ -1,4 +1,5 @@
 import { MODELS } from "@/content/models";
+import { VehicleName } from "@/components/ui/VehicleName";
 
 /**
  * 03 Models – model name. Layers crossfade and rise on change.
@@ -20,7 +21,14 @@ export function ModelIntro({ selectedIndex }: { selectedIndex: number }) {
               transition: "opacity 700ms ease, transform 800ms var(--ease-kiosk)",
             }}
           >
-            <h1 className="font-display text-[84px] leading-none whitespace-nowrap text-ink">{m.fullName}</h1>
+            <h1>
+              <VehicleName
+                model={m}
+                textClassName="font-display text-[84px] leading-none whitespace-nowrap text-ink"
+                artworkHeight={52}
+                artworkMaxWidth={455}
+              />
+            </h1>
           </div>
         );
       })}
