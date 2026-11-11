@@ -10,6 +10,7 @@ import { CircleIconButton } from "@/components/ui/CircleIconButton";
 import { CloseIcon } from "@/components/ui/icons/CloseIcon";
 import { QrCode } from "@/components/ui/QrCode";
 import { VariantSelector } from "@/components/ui/VariantSelector";
+import { VehicleName } from "@/components/ui/VehicleName";
 import { DetailsGallery } from "./DetailsGallery";
 import { DetailsSpecGrid } from "./DetailsSpecGrid";
 
@@ -56,7 +57,13 @@ export function DetailsPanel({
       <div className="scrollbar-none absolute inset-0 flex flex-col gap-11 overflow-y-auto px-14 pt-14 pb-[72px]">
         <div className="flex flex-col gap-[14px] pr-24">
           <div className="text-[22px] font-medium uppercase tracking-[0.32em] text-gold">Details</div>
-          <div className="font-display text-[56px] leading-[1.05]">{model.name}</div>
+          <VehicleName
+            model={model}
+            short
+            textClassName="font-display text-[56px] leading-[1.05]"
+            artworkHeight={36}
+            artworkMaxWidth={315}
+          />
           <div className="flex items-center gap-3 text-[24px] text-ink-2">
             <AccentDot colour={model.accent} size={16} glow={14} />
             {model.colourName}

@@ -1,6 +1,7 @@
 import type { Model } from "@/lib/types/content";
 import { rgba } from "@/lib/style/rgba";
 import { MediaImage } from "@/components/ui/MediaImage";
+import { VehicleName } from "@/components/ui/VehicleName";
 
 interface ModelRailCardProps {
   model: Model;
@@ -36,10 +37,15 @@ export function ModelRailCard({ model, selected, onClick }: ModelRailCardProps) 
         />
       </div>
       <div
-        className="text-left text-[22px] whitespace-nowrap transition-colors duration-400"
+        className="flex h-[22px] w-full items-center justify-center text-[22px] whitespace-nowrap transition-colors duration-400"
         style={{ fontWeight: selected ? 600 : 400, color: selected ? "#F2F0EB" : "#9A9DA5" }}
       >
-        {model.name}
+        <VehicleName
+          model={model}
+          textClassName=""
+          artworkHeight={14}
+          artworkMaxWidth={123}
+        />
       </div>
       <div
         className="absolute inset-x-4 bottom-[-1px] h-[3px] rounded-[2px] bg-gold-line shadow-[0_0_14px_rgba(232,200,117,0.7)] transition-opacity duration-400"
