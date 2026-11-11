@@ -33,7 +33,7 @@ export function ModelRail({ selectedIndex, onSelect }: ModelRailProps) {
     <div
       ref={railRef}
       data-rail
-      className="scrollbar-none absolute inset-x-0 bottom-[80px] h-60 overflow-x-auto overflow-y-hidden"
+      className="scrollbar-none absolute inset-x-0 bottom-[145px] h-60 overflow-x-auto overflow-y-hidden"
       style={{ maskImage: RAIL_MASK, WebkitMaskImage: RAIL_MASK }}
     >
       <div className="flex w-max gap-5 px-[120px] py-[14px]">

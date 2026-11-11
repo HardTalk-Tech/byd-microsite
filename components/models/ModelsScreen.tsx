@@ -22,6 +22,9 @@ export function ModelsScreen() {
   const { state, actions, scale } = useKiosk();
   const selected = state.modelIndex;
   const model = MODELS[selected];
+  const hasVariantSelector = model.variants.length > 1 || Boolean(model.variants[0]?.name);
+  const specTop = hasVariantSelector ? 334 : 310;
+  const actionsTop = hasVariantSelector ? 495 : 471;
 
   const swipe = useSwipe({
     scale,
@@ -49,16 +52,16 @@ export function ModelsScreen() {
       </div>
 
       <ModelIntro selectedIndex={selected} />
-      <div className="absolute left-[120px] top-[352px]">
+      <div className="absolute left-[120px] top-[250px]">
         <VariantSelector
           variants={model.variants}
           selectedIndex={state.variantIndex}
           onSelect={actions.selectVariant}
         />
       </div>
-      <ModelSpecStrip variant={getVariant(model, state.variantIndex)} />
+      <ModelSpecStrip variant={getVariant(model, state.variantIndex)} top={specTop} />
 
-      <div className="absolute left-[120px] top-[608px] flex gap-4">
+      <div className="absolute left-[120px] flex gap-4" style={{ top: actionsTop }}>
         <GoldButton
           arrow
           onClick={() => actions.goTo("experience")}

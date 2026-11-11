@@ -7,7 +7,7 @@ import { VehicleName } from "@/components/ui/VehicleName";
  */
 export function ModelIntro({ selectedIndex }: { selectedIndex: number }) {
   return (
-    <div className="absolute left-[120px] top-[190px] h-[140px] w-[760px]">
+    <div className="absolute left-[120px] top-[175px] h-[140px] w-[760px]">
       {MODELS.map((m, i) => {
         const isSelected = i === selectedIndex;
         return (
