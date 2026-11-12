@@ -5,14 +5,15 @@ import type { MapCluster, Showroom } from "@/lib/types/content";
  *
  * - location / directionsUrl: from the Google Maps share links supplied by the client
  *   (coordinates read from each link's resolved address).
- * - phone: from the client's Google listings ("0112 125 125" = +94 112 125 125).
- * - address: Galle as supplied by the client; the others are the street at the map pin
- *   (to confirm with the client).
+ * - phone: from the client's Google listings ("0112 125 125" = +94 112 125 125;
+ *   Ampara lists its own number, 077 887 9970).
+ * - address: Galle as supplied by the client; Ampara, Batticaloa and Jaffna as on their
+ *   Google listings; the others are the street at the map pin (to confirm with the client).
  * - province: from the coordinates (Natural Earth district boundaries).
  * - hours: 8:00 AM – 6:00 PM for every location for now (client); change any one
  *   location by editing its own `hours` line.
  *
- * Listed alphabetically by name ("Colombo – Altair" … "Ratnapura").
+ * Listed alphabetically by name ("Ampara" … "Ratnapura").
  */
 
 const MAIN_PHONE = "+94 112 125 125";
@@ -20,6 +21,31 @@ const MAIN_PHONE = "+94 112 125 125";
 const DEFAULT_HOURS = "8:00 AM – 6:00 PM";
 
 export const SHOWROOMS: readonly Showroom[] = [
+  {
+    id: "ampara",
+    city: "Ampara",
+    type: "3S Facility",
+    location: { lat: 7.2947477, lng: 81.6920214 },
+    province: "eastern",
+    // Level with Kandy's label on the map: nudge it down so the two don't run together.
+    label: { side: "left", dy: 30 },
+    address: "No 431 Hospital Road, Ampara",
+    phone: "+94 77 887 9970",
+    hours: DEFAULT_HOURS,
+    directionsUrl: "https://share.google/x7VfUunjeOWYSa3Mx",
+  },
+  {
+    id: "batticaloa",
+    city: "Batticaloa",
+    type: "Showroom",
+    location: { lat: 7.7298261, lng: 81.6773444 },
+    province: "eastern",
+    label: { side: "left" },
+    address: "Trincomalee–Batticaloa Road, Batticaloa",
+    phone: MAIN_PHONE,
+    hours: DEFAULT_HOURS,
+    directionsUrl: "https://share.google/IBUbRSOLrtAawwMyX",
+  },
   {
     id: "colombo-altair",
     city: "Colombo",
@@ -73,6 +99,18 @@ export const SHOWROOMS: readonly Showroom[] = [
     phone: "+94 77 310 4000",
     hours: DEFAULT_HOURS,
     directionsUrl: "https://maps.app.goo.gl/7EE2Y2BdKzFCEjx67",
+  },
+  {
+    id: "jaffna",
+    city: "Jaffna",
+    type: "3S Facility",
+    location: { lat: 9.6327899, lng: 80.0903773 },
+    province: "northern",
+    label: { side: "right" },
+    address: "7/1 Ariyalai East Road, Jaffna",
+    phone: MAIN_PHONE,
+    hours: DEFAULT_HOURS,
+    directionsUrl: "https://share.google/PalIaTY6DWjJGzqH2",
   },
   {
     id: "kandy",
@@ -137,6 +175,12 @@ export const SHOWROOMS: readonly Showroom[] = [
     directionsUrl: "https://maps.app.goo.gl/HNcTGDJTLgqGBM2z5",
   },
 ];
+
+/** Selected when 05 Showrooms opens (and after an idle reset): the main Colombo location. */
+export const DEFAULT_SHOWROOM_INDEX = Math.max(
+  0,
+  SHOWROOMS.findIndex((s) => s.id === "colombo-altair"),
+);
 
 /** The three central-Colombo locations are under 1 km apart: one pin on the map. */
 export const MAP_CLUSTERS: readonly MapCluster[] = [

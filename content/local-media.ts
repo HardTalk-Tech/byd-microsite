@@ -8,6 +8,7 @@
 export const LOCAL_MEDIA_PATHS: ReadonlySet<string> = new Set([
   "home/blade-battery.webp",
   "home/chassis.webp",
+  "home/lineup.webp",
   "models/atto-1/atto-1-cutout.webp",
   "models/atto-1/atto-1-gallery-1.webp",
   "models/atto-1/atto-1-gallery-2.webp",
