@@ -1,10 +1,10 @@
 import { MediaImage } from "@/components/ui/MediaImage";
 
 /**
- * Client-supplied line-up photo (public/media/home/BYD-Lineup.png, 2172 × 724), trimmed to the
- * cars and saved as home/lineup.webp (2109 × 305, transparent).
+ * Client-supplied line-up photo (public/media/home/lineup-new.png, 2172 × 724), trimmed to the
+ * cars and saved as home/lineup.webp (2137 × 306, transparent).
  */
-const LINEUP = { path: "home/lineup.webp", width: 2109, height: 305 } as const;
+const LINEUP = { path: "home/lineup.webp", width: 2137, height: 306 } as const;
 /** Drawn width in design px; the height follows the image ratio. */
 const DRAW_W = 1600;
 

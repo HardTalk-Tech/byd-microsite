@@ -13,6 +13,11 @@ interface ScreenTransitionProps {
  * Crossfades a route-level screen in and out (React <ViewTransition>).
  * Model changes inside 04 Experience use the "model-step" type and skip the
  * crossfade, because they dip to black instead.
+ *
+ * The screen sits in a full-size box that clips its own content: the crossfade
+ * snapshot is drawn above the page and ignores the stage's clipping, so without
+ * this, anything parked off-screen (e.g. the closed 04b Details Panel) would flash
+ * in the side bars during the fade.
  */
 export function ScreenTransition({ duration, children }: ScreenTransitionProps) {
   const className = `screen-${duration}`;
@@ -22,7 +27,7 @@ export function ScreenTransition({ duration, children }: ScreenTransitionProps) 
       exit={{ "model-step": "none", default: className }}
       default="none"
     >
-      {children}
+      <div className="absolute inset-0 overflow-hidden">{children}</div>
     </ViewTransition>
   );
 }

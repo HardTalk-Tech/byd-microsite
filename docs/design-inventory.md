@@ -647,7 +647,7 @@ Atto 2), ideally in the colours shown on the kiosk; Home images
    eyebrow, "The battery is the structure", a lead line (`REVIEW`), and the three battery
    points as a numbered list.
 2. *In every BYD* – unchanged.
-3. *Find your BYD* – the client's line-up photo (`home/lineup.webp`, trimmed from `BYD-Lineup.png`) on a gold horizon.
+3. *Find your BYD* – the client's line-up photo (`home/lineup.webp`, trimmed from `lineup-new.png`) on a gold horizon.
 - The interactive chassis section ("Under the skin / Power, laid out") was removed.
 
 **Offline (Stage 3)** – `public/sw.js`, `lib/offline/*`
