@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { useKiosk } from "@/lib/kiosk/KioskProvider";
 import { KIOSK_TIMINGS } from "@/lib/kiosk/timings";
 import { BladeBatterySection } from "./BladeBatterySection";
-import { ChassisSection } from "./ChassisSection";
 import { FindYourBydSection } from "./FindYourBydSection";
 import { HomeHero } from "./HomeHero";
 import { InEveryBydSection } from "./InEveryBydSection";
@@ -31,7 +30,6 @@ export function HomeScreen() {
         onScrollNext={() => scrollRef.current?.scrollTo({ top: stageHeight, behavior: "smooth" })}
       />
       <BladeBatterySection />
-      <ChassisSection />
       <InEveryBydSection />
       <FindYourBydSection />
     </div>

@@ -60,7 +60,6 @@ export interface KioskState {
   /** 03 Models swipe hint has been dismissed. */
   swipeHintSeen: boolean;
   showroomIndex: number;
-  hotspotIndex: number;
   /** 02 Home scrolled past the threshold (idle timer runs). */
   homeScrolled: boolean;
   /** Bumped to ask 02 Home to scroll back to the top. */
@@ -93,7 +92,6 @@ const INITIAL_STATE: KioskState = {
   time: "day",
   swipeHintSeen: false,
   showroomIndex: DEFAULT_SHOWROOM_INDEX,
-  hotspotIndex: 0,
   homeScrolled: false,
   homeScrollToken: 0,
   controlsVisible: true,
@@ -141,7 +139,6 @@ export interface KioskActions {
   closeForm: () => void;
   dismissIdle: () => void;
   selectShowroom: (index: number) => void;
-  selectHotspot: (index: number) => void;
   setHomeScrolled: (scrolled: boolean) => void;
   openStatus: () => void;
   closeStatus: () => void;
@@ -285,7 +282,6 @@ export function KioskProvider({ children }: { children: ReactNode }) {
         patch({ idleSecondsLeft: null });
       },
       selectShowroom: (index) => patch({ showroomIndex: index }),
-      selectHotspot: (index) => patch({ hotspotIndex: index }),
       setHomeScrolled(scrolled) {
         markTouch();
         if (stateRef.current.homeScrolled !== scrolled) patch({ homeScrolled: scrolled });

@@ -19,7 +19,6 @@ export function ShowroomList({ selectedIndex, onSelect }: ShowroomListProps) {
         {SHOWROOMS.map((showroom, i) => (
           <SelectableRow
             key={showroom.id}
-            variant="showroom-compact"
             index={i}
             title={showroom.city}
             subtitle={showroom.area}

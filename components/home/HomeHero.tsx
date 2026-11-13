@@ -11,12 +11,13 @@ import { ScrollCue } from "./ScrollCue";
 
 /** 02 Home – first section: showreel, headline, Explore Models, scroll cue. */
 export function HomeHero({ onScrollNext }: { onScrollNext: () => void }) {
-  const { actions } = useKiosk();
+  const { state, actions } = useKiosk();
 
   return (
     <section className="relative h-[var(--stage-h)] snap-start">
       <MediaVideo
-        src={siteVideoUrl("heroShowreel")}
+        // Not behind 01 Loading: the first launch is saving this file at the same time.
+        src={state.loading ? null : siteVideoUrl("heroShowreel")}
         fallback={<VideoBackdrop variant="logo" label={placeholderLabel("video", SITE_VIDEO_LINKS.heroShowreel)} />}
       />
       <div

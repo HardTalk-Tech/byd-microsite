@@ -190,12 +190,38 @@ async function handleMedia(request) {
   const cache = await caches.open(MEDIA_CACHE);
   const cached = await cache.match(cacheKey(request.url));
 
-  // Not downloaded yet: plain network passthrough (the page owns caching).
-  if (!cached) return fetch(request);
+  // Not downloaded yet: stream from the network (the page owns caching).
+  if (!cached) return streamFromNetwork(request);
 
   const range = request.headers.get("Range");
   if (!range) return cached;
   return rangeResponse(cached, range);
+}
+
+/**
+ * A file can finish saving while a <video> is still streaming it (e.g. the Home hero behind
+ * the first-launch download); from then on its byte ranges come from the cache. Chrome stops
+ * the video if those later responses are a different kind from the earlier ones (code 2,
+ * "data source error"). So network data is fetched in CORS mode and re-wrapped in a Response
+ * built here, exactly like the cached ranges in rangeResponse(). If the bucket has no CORS
+ * rule, fall back to the plain (opaque) fetch: nothing gets saved then, so no switch happens.
+ */
+const PASS_HEADERS = ["Content-Type", "Content-Length", "Content-Range", "Accept-Ranges"];
+
+async function streamFromNetwork(request) {
+  const range = request.headers.get("Range");
+  let res;
+  try {
+    res = await fetch(request.url, { mode: "cors", credentials: "omit", headers: range ? { Range: range } : {} });
+  } catch {
+    return fetch(request);
+  }
+  const headers = new Headers();
+  for (const name of PASS_HEADERS) {
+    const value = res.headers.get(name);
+    if (value) headers.set(name, value);
+  }
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 
 async function rangeResponse(full, rangeHeader) {
