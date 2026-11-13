@@ -56,7 +56,7 @@ const siteLinks = [...siteSrc.matchAll(/^\s+(\w+):\s*"([^"]*)",/gm)].map((m) => 
 const localList = new Set([...read("content/local-media.ts").matchAll(/"([^"]+\.(?:webp|png|jpg))"/g)].map((m) => m[1]));
 const expectedLocal = [
   { path: "home/blade-battery.webp", use: "02 Home – Blade Battery poster / fallback" },
-  { path: "home/lineup.webp", use: "02 Home – \"Find your BYD\" line-up (from BYD-Lineup.png)" },
+  { path: "home/lineup.webp", use: "02 Home – \"Find your BYD\" line-up (from lineup-new.png)" },
   ...models.flatMap(({ slug, name }) => [
     { path: `models/${slug}/${slug}-cutout.webp`, use: `${name} – cut-out (Models, Experience fallback)` },
     { path: `models/${slug}/${slug}-thumb.webp`, use: `${name} – rail thumbnail` },
