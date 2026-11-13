@@ -2,7 +2,7 @@ interface RippleRingsProps {
   /** Centre of the rings in the parent's coordinates (px). */
   x: number;
   y: number;
-  /** Ring diameter (design: 120 map pin, 140 platform hotspot). */
+  /** Ring diameter (design: 120 map pin). */
   size: number;
   count?: number;
   seconds?: number;

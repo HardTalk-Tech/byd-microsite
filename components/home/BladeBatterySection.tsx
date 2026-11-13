@@ -1,29 +1,34 @@
 "use client";
 
-import { BATTERY_POINTS } from "@/content/home-content";
+import { BATTERY_POINTS, BLADE_BATTERY_SECTION } from "@/content/home-content";
 import { SITE_VIDEO_LINKS } from "@/content/site-videos";
 import { mediaUrl, placeholderLabel } from "@/lib/media/media-url";
+import { useKiosk } from "@/lib/kiosk/KioskProvider";
 import { siteVideoUrl } from "@/lib/media/site-video";
 import { useMediaDebug } from "@/lib/media/useMediaDebug";
+import { pad2 } from "@/lib/style/rgba";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { MediaImage } from "@/components/ui/MediaImage";
 import { MediaVideo } from "@/components/ui/MediaVideo";
-import { BatteryPointCard } from "./BatteryPointCard";
 
 const PHOTO = "home/blade-battery.webp";
 
 /**
- * 02 Home – Blade Battery, full-width cinematic band.
- * Background: the Blade Battery video link (content/site-videos.ts); the battery
- * photo shows while it loads, if it fails, or while the link is a dummy.
+ * 02 Home – Blade Battery, full screen (one stage height, like the hero).
+ * Background: the Blade Battery film (content/site-videos.ts); the battery photo shows
+ * while it loads, if it fails, or while the link is empty.
+ * The film has its own captions at the bottom centre and titles at the top centre, so
+ * the overlay text sits in a column on the left, over a dark gradient.
  */
 export function BladeBatterySection() {
   const debug = useMediaDebug();
+  const { state } = useKiosk();
 
   return (
-    <section className="relative h-[1040px] snap-start overflow-hidden">
+    <section className="relative h-[var(--stage-h)] snap-start overflow-hidden bg-kiosk-bg">
       <MediaVideo
-        src={siteVideoUrl("bladeBattery")}
+        // Not behind 01 Loading: the first launch is saving this file at the same time.
+        src={state.loading ? null : siteVideoUrl("bladeBattery")}
         poster={mediaUrl(PHOTO) ?? undefined}
         fallback={
           <div className="absolute inset-0">
@@ -36,35 +41,42 @@ export function BladeBatterySection() {
           </div>
         }
       />
-      {/* Legibility: dark on the left and bottom, blends into the hero above */}
+      {/* Legibility: dark on the left, soft fades top (into the hero) and bottom */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(10,10,11,0.96) 0%, rgba(10,10,11,0.82) 34%, rgba(10,10,11,0.25) 66%, rgba(10,10,11,0.1) 100%)",
+            "linear-gradient(90deg, rgba(10,10,11,0.95) 0%, rgba(10,10,11,0.86) 30%, rgba(10,10,11,0.45) 50%, rgba(10,10,11,0.08) 72%, rgba(10,10,11,0) 100%)",
         }}
       />
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(10,10,11,1) 0%, rgba(10,10,11,0) 18%, rgba(10,10,11,0) 52%, rgba(10,10,11,0.92) 82%, rgba(10,10,11,1) 100%)",
+            "linear-gradient(to bottom, rgba(10,10,11,1) 0%, rgba(10,10,11,0) 16%, rgba(10,10,11,0) 78%, rgba(10,10,11,0.85) 100%)",
         }}
       />
 
-      <div className="absolute left-[120px] top-[150px] flex w-[760px] flex-col gap-8">
-        <Eyebrow>Blade Battery</Eyebrow>
-        <h2 className="font-display text-[72px] leading-[1.1] text-pretty">The battery is the structure</h2>
-        <p className="max-w-[680px] text-[28px] leading-[1.55] text-pretty text-ink-2">
-          Long, thin LFP cells are arranged like blades and fitted straight into the pack, with no bulky
-          modules in between. The cells help carry the load, so more of the pack is used to store energy.
+      <div className="absolute inset-y-0 left-[120px] flex w-[780px] flex-col justify-center pt-[110px] pb-[60px]">
+        <Eyebrow>{BLADE_BATTERY_SECTION.eyebrow}</Eyebrow>
+        <h2 className="mt-7 font-display text-[68px] leading-[1.1] text-pretty [text-shadow:0_4px_32px_rgba(0,0,0,0.6)]">
+          {BLADE_BATTERY_SECTION.title}
+        </h2>
+        <p className="mt-6 max-w-[700px] text-[28px] leading-[1.5] text-pretty text-ink-2">
+          {BLADE_BATTERY_SECTION.lead}
         </p>
-      </div>
 
-      <div className="absolute inset-x-[120px] bottom-[100px] grid grid-cols-3 gap-6">
-        {BATTERY_POINTS.map((point) => (
-          <BatteryPointCard key={point.title} point={point} />
-        ))}
+        <ol className="mt-10 flex flex-col">
+          {BATTERY_POINTS.map((point, i) => (
+            <li key={point.title} className="flex gap-6 border-t border-white/10 py-5">
+              <div className="pt-1 font-mono text-[22px] text-gold">{pad2(i + 1)}</div>
+              <div className="flex flex-col gap-1.5">
+                <div className="text-[28px] font-medium">{point.title}</div>
+                <div className="text-[22px] leading-[1.45] text-pretty text-ink-3">{point.description}</div>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

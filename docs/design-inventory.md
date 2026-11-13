@@ -639,14 +639,16 @@ Atto 2), ideally in the colours shown on the kiosk; Home images
 - `?debug=1` shows the developer labels (`?debug=0` hides them; per tab).
 - The Details panel's Feature video was removed.
 
-**02 Home after the hero** (all copy marked `REVIEW` in `content/home-content.ts`)
-1. *Blade Battery* – full-width video (`content/site-videos.ts` → `bladeBattery`) over the
-   battery photo, dark gradients, three glass cards.
-2. *Interactive chassis* – `home/chassis.webp`; 4 parts traced as polygons
-   (`CHASSIS_PARTS`). Tap a part, its marker or its row: that part shows in full colour with
-   a gold glow and ripples, the rest dims; glass info card "0X / 04".
-3. *In every BYD* – unchanged.
-4. *Find your BYD* – the client's line-up photo (`home/lineup.webp`, trimmed from `BYD-Lineup.png`) on a gold horizon.
+**02 Home** (videos in `content/site-videos.ts`, copy in `content/home-content.ts`)
+- *Hero* – full-screen `heroShowreel` (BYD brand film, 1920×1080, 90 s), "Drive the Future".
+1. *Blade Battery* – full screen (one stage height, like the hero), `bladeBattery` film
+   (1280×720, 115 s) over the battery photo. The film has its own captions (bottom centre)
+   and titles (top centre), so the text sits in a left column over a dark gradient:
+   eyebrow, "The battery is the structure", a lead line (`REVIEW`), and the three battery
+   points as a numbered list.
+2. *In every BYD* – unchanged.
+3. *Find your BYD* – the client's line-up photo (`home/lineup.webp`, trimmed from `BYD-Lineup.png`) on a gold horizon.
+- The interactive chassis section ("Under the skin / Power, laid out") was removed.
 
 **Offline (Stage 3)** – `public/sw.js`, `lib/offline/*`
 - `byd-shell-v2`: pages + RSC payloads (network-first 3 s), `/_next/static` (only files the server marks immutable, so never in dev), `/media`,

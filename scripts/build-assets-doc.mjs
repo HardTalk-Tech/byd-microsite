@@ -49,12 +49,12 @@ for (const { slug } of models) {
 
 // --- Home video links
 const siteSrc = read("content/site-videos.ts");
-const siteLinks = [...siteSrc.matchAll(/^\s+(\w+): "([^"]*)",/gm)].map((m) => ({ key: m[1], url: m[2] }));
+// The link may sit on the line after its key.
+const siteLinks = [...siteSrc.matchAll(/^\s+(\w+):\s*"([^"]*)",/gm)].map((m) => ({ key: m[1], url: m[2] }));
 
 // --- Local images
 const localList = new Set([...read("content/local-media.ts").matchAll(/"([^"]+\.(?:webp|png|jpg))"/g)].map((m) => m[1]));
 const expectedLocal = [
-  { path: "home/chassis.webp", use: "02 Home – interactive chassis" },
   { path: "home/blade-battery.webp", use: "02 Home – Blade Battery poster / fallback" },
   { path: "home/lineup.webp", use: "02 Home – \"Find your BYD\" line-up (from BYD-Lineup.png)" },
   ...models.flatMap(({ slug, name }) => [

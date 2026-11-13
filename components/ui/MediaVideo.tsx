@@ -16,7 +16,8 @@ interface MediaVideoProps {
 /**
  * Looping, muted background video (Home hero, Blade Battery).
  * - The fallback always sits underneath, so a slow or broken link never shows black.
- * - A failed load is retried once; after that the video is dropped and the fallback stays.
+ * - A failed load is retried once (after 1.5 s); after that the video is dropped and the
+ *   fallback stays.
  * - It only plays while at least half of it is on screen, and releases its
  *   resources when it leaves (kiosk performance rule: few active videos).
  */
@@ -47,10 +48,15 @@ export function MediaVideo({ src, fallback, poster, className }: MediaVideoProps
     };
   }, [playable]);
 
+  // Pending retry, cleared on unmount.
+  const retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(retryTimer.current), []);
+
   const handleError = () => {
     if (!retried.current) {
       retried.current = true;
-      videoRef.current?.load();
+      // Short pause first, so a passing network blip is over before the retry.
+      retryTimer.current = setTimeout(() => videoRef.current?.load(), 1500);
       return;
     }
     setFailedSrc(src);

@@ -120,14 +120,6 @@ export interface BatteryPoint {
   description: string;
 }
 
-/** A tappable part of the chassis image on 02 Home. */
-export interface ChassisPart {
-  title: string;
-  description: string;
-  /** Outline of the part, in px of the chassis image (CHASSIS_IMAGE.width × height). */
-  outline: ReadonlyArray<readonly [number, number]>;
-}
-
 export interface CommonFeature {
   title: string;
   description: string;
