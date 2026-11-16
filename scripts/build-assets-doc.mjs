@@ -56,8 +56,9 @@ const localList = new Set([...read("content/local-media.ts").matchAll(/"([^"]+\.
 const expectedLocal = [
   { path: "home/chassis.webp", use: "02 Home – interactive chassis" },
   { path: "home/blade-battery.webp", use: "02 Home – Blade Battery poster / fallback" },
+  { path: "home/lineup.webp", use: "02 Home – \"Find your BYD\" line-up (from BYD-Lineup.png)" },
   ...models.flatMap(({ slug, name }) => [
-    { path: `models/${slug}/${slug}-cutout.webp`, use: `${name} – cut-out (Models, Experience fallback, line-up)` },
+    { path: `models/${slug}/${slug}-cutout.webp`, use: `${name} – cut-out (Models, Experience fallback)` },
     { path: `models/${slug}/${slug}-thumb.webp`, use: `${name} – rail thumbnail` },
     ...[1, 2, 3, 4].map((i) => ({ path: `models/${slug}/${slug}-gallery-${i}.webp`, use: `${name} – gallery ${i}` })),
   ]),

@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { DEFAULT_MODEL_INDEX, MODELS, wrapModelIndex } from "@/content/models";
+import { DEFAULT_SHOWROOM_INDEX } from "@/content/showrooms";
 import { SITE_SETTINGS } from "@/content/site-settings";
 import { GALLERY_SIZE } from "@/lib/media/media-paths";
 import type { TimeKey, ViewKey } from "@/lib/types/content";
@@ -91,7 +92,7 @@ const INITIAL_STATE: KioskState = {
   view: "exterior",
   time: "day",
   swipeHintSeen: false,
-  showroomIndex: 0,
+  showroomIndex: DEFAULT_SHOWROOM_INDEX,
   hotspotIndex: 0,
   homeScrolled: false,
   homeScrollToken: 0,

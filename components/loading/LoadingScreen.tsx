@@ -29,7 +29,7 @@ export function LoadingScreen() {
         <BrandLogo width={240} height={76} priority />
         <LoadingProgressRing progress={progress} />
         <div className="flex flex-col items-center gap-4">
-          <div className="text-[38px] font-light tracking-[0.02em] text-ink">Preparing showroom experience</div>
+          <div className="text-[38px] font-light tracking-[0.02em] text-ink">Preparing Showroom Experience</div>
           <div className="text-[22px] tracking-[0.06em] text-ink-4">
             {loadTotal > 0 ? `${Math.min(loadedCount, loadTotal)} of ${loadTotal} videos ready` : "Getting everything ready"}
           </div>

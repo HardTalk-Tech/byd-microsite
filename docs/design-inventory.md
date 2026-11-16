@@ -260,7 +260,7 @@ Sizes are the rendered size at 1920×1080.
 - **Specs (design):** placeholders Range `XXX km`, Battery `XX kWh`, Power `XXX kW`, Seats `X seats`.
   **Now replaced by the official spec sheets** (see §12).
 - **Highlights (design):** Blade Battery, V2L, 360° camera, `[Highlight 4]` – placeholders, **removed** (see §12).
-- **Showrooms (design):** 7 placeholder towns incl. Ampara and Batticaloa – **replaced by the 9 real locations** (see §14).
+- **Showrooms (design):** 7 placeholder towns incl. Ampara and Batticaloa – **replaced by the 12 real locations** (see §14).
 - **Hotline:** design placeholder `+94 XX XXX XXXX` – **now the main contact details** (see §13).
 - **Home copy:** battery points, platform hotspots (with x/y on the image), 6 "In every BYD" items (contain `XXX kW`, `X years or XXX,XXX km` placeholders).
 
@@ -503,31 +503,41 @@ Individual showroom addresses, phones and hours remain placeholders (not supplie
 
 ## 14. Real showroom locations (added after Stage 1)
 
-Source: Google Maps share links supplied by the client. Ampara and Batticaloa (design
-placeholders) are removed. List is alphabetical; the kiosk starts on the first entry.
+Source: Google Maps share links supplied by the client. The design's placeholder towns were
+removed; Ampara, Batticaloa and Jaffna were later added back as real locations. List is
+alphabetical; the screen opens on Colombo – Altair (`DEFAULT_SHOWROOM_INDEX`).
 
 | # | List name | Type | Coordinates (from the link) | Phone | Directions QR |
 |---|---|---|---|---|---|
-| 01 | Colombo – Altair | Showroom | 6.91874, 79.85420 | +94 112 125 125 | maps.app.goo.gl/GSNKogMeswaonQFK6 |
-| 02 | Colombo – Union Place | Showroom | 6.91878, 79.86173 | +94 112 125 125 | maps.app.goo.gl/GzGS6Tga8d9L72qi9 |
-| 03 | Colombo – Vauxhall Street | Showroom | 6.92220, 79.85825 | +94 112 125 125 | maps.app.goo.gl/JVW6oSjmNA6XsZ998 |
-| 04 | Galle | Showroom | 6.03344, 80.24518 | +94 77 310 4000 | maps.app.goo.gl/7EE2Y2BdKzFCEjx67 |
-| 05 | Kandy | Showroom | 7.31515, 80.63059 | +94 112 125 125 | maps.app.goo.gl/geNFUMza4WvqDgxC7 |
-| 06 | Kurunegala | 3S Facility | 7.44071, 80.34020 | +94 112 125 125 | maps.app.goo.gl/1WWSrh7XT958PbbU7 |
-| 07 | Moratuwa | Showroom | 6.79543, 79.88771 | +94 112 125 125 | maps.app.goo.gl/orUBii7U8LMFt76R9 |
-| 08 | Negombo | Showroom | 7.22079, 79.84643 | +94 112 125 125 * | maps.app.goo.gl/KiHdNpKAxCo2ueEV7 |
-| 09 | Ratnapura | 3S Facility | 6.67743, 80.41640 | +94 112 125 125 | maps.app.goo.gl/HNcTGDJTLgqGBM2z5 |
+| 01 | Ampara | 3S Facility | 7.29475, 81.69202 | +94 77 887 9970 | share.google/x7VfUunjeOWYSa3Mx |
+| 02 | Batticaloa | Showroom | 7.72983, 81.67734 | +94 112 125 125 | share.google/IBUbRSOLrtAawwMyX |
+| 03 | Colombo – Altair | Showroom | 6.91874, 79.85420 | +94 112 125 125 | maps.app.goo.gl/GSNKogMeswaonQFK6 |
+| 04 | Colombo – Union Place | Showroom | 6.91878, 79.86173 | +94 112 125 125 | maps.app.goo.gl/GzGS6Tga8d9L72qi9 |
+| 05 | Colombo – Vauxhall Street | Showroom | 6.92220, 79.85825 | +94 112 125 125 | maps.app.goo.gl/JVW6oSjmNA6XsZ998 |
+| 06 | Galle | Showroom | 6.03344, 80.24518 | +94 77 310 4000 | maps.app.goo.gl/7EE2Y2BdKzFCEjx67 |
+| 07 | Jaffna | 3S Facility | 9.63279, 80.09038 | +94 112 125 125 | share.google/PalIaTY6DWjJGzqH2 |
+| 08 | Kandy | Showroom | 7.31515, 80.63059 | +94 112 125 125 | maps.app.goo.gl/geNFUMza4WvqDgxC7 |
+| 09 | Kurunegala | 3S Facility | 7.44071, 80.34020 | +94 112 125 125 | maps.app.goo.gl/1WWSrh7XT958PbbU7 |
+| 10 | Moratuwa | Showroom | 6.79543, 79.88771 | +94 112 125 125 | maps.app.goo.gl/orUBii7U8LMFt76R9 |
+| 11 | Negombo | Showroom | 7.22079, 79.84643 | +94 112 125 125 * | maps.app.goo.gl/KiHdNpKAxCo2ueEV7 |
+| 12 | Ratnapura | 3S Facility | 6.67743, 80.41640 | +94 112 125 125 | maps.app.goo.gl/HNcTGDJTLgqGBM2z5 |
 
-\* Negombo listing has no number; the main hotline is shown (to confirm).
+Ampara, Batticaloa and Jaffna: name, address, phone and pin from each place's Google
+listing (the share links open the listing). Ampara and Batticaloa pins match their listed
+Plus Codes (7MVR+VR, PMHG+WW).
+
+* Negombo listing has no number; the main hotline is shown (to confirm).
 
 **Map:** pins are placed from the real coordinates with `lib/geo/map-projection.ts`
 (equirectangular fit to the design's outline; error ≤ 3 viewBox units). The map moved
 from x 660 to x 760 to give the west-coast labels room. The three central-Colombo
 locations are < 1 km apart (same pixel), so they share one **cluster pin** ("Colombo" + "3"
-badge); tapping it selects them in turn. Moratuwa's label is nudged down 14 px to clear it.
+badge); tapping it selects them in turn. Moratuwa's label is nudged down 14 px to clear it,
+and Ampara's 30 px to clear Kandy's.
 
 **Card:** eyebrow "BYD Showroom" / "BYD 3S Facility", title = town, address, phone,
-hours, directions QR (real, from the share link). List rows are 72 px (9 rows fit).
+hours, directions QR (real, from the share link). The list is two columns of 88 px rows
+(read down, then across) so all 12 fit; Colombo rows show the area on a second line.
 
 **To confirm with the client:**
 - Addresses: Galle as supplied; the others are the street at the map pin
@@ -636,7 +646,7 @@ Atto 2), ideally in the colours shown on the kiosk; Home images
    (`CHASSIS_PARTS`). Tap a part, its marker or its row: that part shows in full colour with
    a gold glow and ripples, the rest dims; glass info card "0X / 04".
 3. *In every BYD* – unchanged.
-4. *Find your BYD* – line-up of all nine cut-outs on a gold horizon.
+4. *Find your BYD* – the client's line-up photo (`home/lineup.webp`, trimmed from `BYD-Lineup.png`) on a gold horizon.
 
 **Offline (Stage 3)** – `public/sw.js`, `lib/offline/*`
 - `byd-shell-v2`: pages + RSC payloads (network-first 3 s), `/_next/static` (only files the server marks immutable, so never in dev), `/media`,
