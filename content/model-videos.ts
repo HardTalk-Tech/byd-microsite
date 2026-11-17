@@ -56,7 +56,7 @@ export const MODEL_VIDEO_LINKS: Readonly<Record<string, Readonly<Record<ClipKey,
   },
   "sealion-8": {
     "exterior-day": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%208%2Fout%2FDay_Sealion8.mp4?alt=media&token=ad90874d-aa90-4b84-95a2-1630ef13ac4e",
-    "exterior-night": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%208%2Fout%2FNight_Sealion8.mp4?alt=media&token=19c778c0-bb3f-4032-b0cc-3e3d05b4151b",
+    "exterior-night": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%208%2Fout%2FNight_Sealion8_Exterior_New.mp4?alt=media&token=166ab659-fee6-4b60-95b2-e26a019559c9",
     "interior-day": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%208%2Fin%2FDay_Sealion8_Interior.mp4?alt=media&token=74c56437-ff4a-4325-b419-0b6a2083cfce",
     "interior-night": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%208%2Fin%2FNight_Sealion8_Interior.mp4?alt=media&token=6d6851b1-f93d-40dc-843b-7d7366ae1a83",
   },
