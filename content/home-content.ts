@@ -29,7 +29,7 @@ export const BATTERY_POINTS: readonly BatteryPoint[] = [
   },
 ];
 
-/** 02 Home – "In every BYD" items. XXX values are placeholders (TBC). */
+/** 02 Home – "In every BYD" items. */
 export const COMMON_FEATURES: readonly CommonFeature[] = [
   {
     title: "Blade Battery",
@@ -44,15 +44,11 @@ export const COMMON_FEATURES: readonly CommonFeature[] = [
     description: "New features and improvements arrive by software update, without a service visit.",
   },
   {
-    title: "DC fast charging",
-    description: "Up to XXX kW DC charging, depending on model.",
-  },
-  {
     title: "Driver assistance",
     description: "Adaptive cruise, lane support and a 360° camera, depending on model.",
   },
   {
     title: "Battery warranty",
-    description: "X years or XXX,XXX km battery warranty in Sri Lanka.",
+    description: "8 years or 160,000 km battery warranty in Sri Lanka.",
   },
 ];

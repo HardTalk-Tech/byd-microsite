@@ -13,9 +13,14 @@ export function InEveryBydSection() {
         <Eyebrow>Across the range</Eyebrow>
         <h2 className="font-display text-[72px] leading-[1.1]">In every BYD</h2>
       </div>
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-6 gap-6">
         {COMMON_FEATURES.map((feature, i) => (
-          <CommonFeatureCard key={feature.title} feature={feature} index={i} />
+          <div
+            key={feature.title}
+            className={`col-span-2 ${i === 3 ? "col-start-2" : ""}`}
+          >
+            <CommonFeatureCard feature={feature} index={i} />
+          </div>
         ))}
       </div>
     </section>

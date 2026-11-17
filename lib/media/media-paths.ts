@@ -7,10 +7,11 @@ export const GALLERY_SIZE = 4;
 export function modelMediaPaths(slug: string): ModelMedia {
   const base = `models/${slug}/${slug}`;
   const clip = (key: ClipKey, ext: "mp4" | "webp") => `${base}-${key}.${ext}`;
+  const modelImage = slug === "racco" ? "models/racco/Racco_model_New.webp" : null;
 
   return {
-    cutout: `${base}-cutout.webp`,
-    thumb: `${base}-thumb.webp`,
+    cutout: modelImage ?? `${base}-cutout.webp`,
+    thumb: modelImage ?? `${base}-thumb.webp`,
     videos: {
       "exterior-day": clip("exterior-day", "mp4"),
       "exterior-night": clip("exterior-night", "mp4"),
