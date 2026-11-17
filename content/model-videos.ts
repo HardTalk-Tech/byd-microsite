@@ -43,7 +43,7 @@ export const MODEL_VIDEO_LINKS: Readonly<Record<string, Readonly<Record<ClipKey,
     "interior-night": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fracco%2Fin%2FNight_Racco_Interior.mp4?alt=media&token=2be958ae-9a85-4664-9ff9-a37a254a86a2",
   },
   "sealion-5": {
-    "exterior-day": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%205%2Fout%2FDay_Sealion5.mp4?alt=media&token=0c8d55b2-5b9c-4201-92f3-ae4695e1c92d",
+    "exterior-day": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%205%2Fout%2FDay_Seaiion5_Exterior_New.mp4?alt=media&token=5a019498-77c0-4c89-a525-42f66cae1195",
     "exterior-night": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%205%2Fout%2FNight_Sealion5.mp4?alt=media&token=30afae3d-7042-4b84-8671-67ece2f65e05",
     "interior-day": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%205%2Fin%2FDay_Sealion5_Interior.mp4?alt=media&token=f162688b-55d0-4e7b-a71a-0f7f64ab7762",
     "interior-night": "https://firebasestorage.googleapis.com/v0/b/byd-ht-project.firebasestorage.app/o/byd-cars%2Fsealion%205%2Fin%2FNight_Sealion5_Interior.mp4?alt=media&token=ec556ced-1cdd-41a0-a9d6-0066f10c76ad",

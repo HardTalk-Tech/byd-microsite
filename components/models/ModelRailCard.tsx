@@ -34,6 +34,8 @@ export function ModelRailCard({ model, selected, onClick }: ModelRailCardProps) 
           tint={model.accent}
           compact
           radius={10}
+          fit={model.slug === "racco" ? "contain" : undefined}
+          style={model.slug === "racco" ? { transform: "scale(0.9)" } : undefined}
         />
       </div>
       <div
