@@ -1,14 +1,14 @@
 import { MediaImage } from "@/components/ui/MediaImage";
 
 /**
- * Client-supplied line-up artwork (public/media/home/lineup-BYD.png, 1280 × 426),
+ * Client-supplied line-up artwork (public/media/home/BYD Range New.webp, 3840 × 1278),
  * cropped at render time to remove its transparent vertical padding.
  */
-const LINEUP = { path: "home/lineup-BYD.png", width: 1280, height: 426 } as const;
+const LINEUP = { path: "home/BYD Range New.webp", width: 3840, height: 1278 } as const;
 /** Drawn width in design px; the height follows the image ratio. */
 const DRAW_W = 1600;
 /** Remove the transparent padding baked into the source artwork. */
-const CROP = { top: 124, bottom: 118 } as const;
+const CROP = { top: 372, bottom: 354 } as const;
 
 /** 02 Home – the nine BYD models side by side on a gold horizon. */
 export function LineupStrip() {
