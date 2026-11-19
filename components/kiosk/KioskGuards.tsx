@@ -36,6 +36,29 @@ export function KioskGuards() {
     };
   }, []);
 
+  // Android, site open in a normal browser tab (not installed): the address bar and
+  // Android's bars take screen height, so the stage leaves gaps at the sides. The first
+  // tap asks for real full screen; after Back leaves it, the next tap asks again.
+  // Skipped on desktops and when the site runs as an installed / full-screen app.
+  useEffect(() => {
+    if (!/Android/i.test(navigator.userAgent) || !document.fullscreenEnabled) return;
+    const browserTab = window.matchMedia("(display-mode: browser)");
+    let pending = false;
+    const enter = () => {
+      if (pending || document.fullscreenElement || !browserTab.matches) return;
+      pending = true;
+      document.documentElement
+        .requestFullscreen({ navigationUI: "hide" })
+        .catch(() => undefined) // not allowed here – the site still works with the bars
+        .finally(() => {
+          pending = false;
+        });
+    };
+    // pointerup counts as a user tap for touch input, so the browser allows the request.
+    document.addEventListener("pointerup", enter, true);
+    return () => document.removeEventListener("pointerup", enter, true);
+  }, []);
+
   // Keep the screen on. The lock is dropped whenever the page is hidden, so it is
   // requested again when the page becomes visible.
   useEffect(() => {
