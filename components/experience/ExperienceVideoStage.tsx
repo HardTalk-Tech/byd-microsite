@@ -56,6 +56,16 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
   const videos = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   /** Links that already had their one retry. */
   const retried = useRef<Set<string>>(new Set());
+  /** Links whose video has a frame on screen (it covers the backdrop, so its shimmer stops). */
+  const [shown, setShown] = useState<ReadonlySet<string>>(() => new Set());
+  const markShown = (url: string, on: boolean) =>
+    setShown((s) => {
+      if (s.has(url) === on) return s;
+      const next = new Set(s);
+      if (on) next.add(url);
+      else next.delete(url);
+      return next;
+    });
 
   const playableUrl = (c: ClipKey) => {
     const { url } = experienceVideo(model, c);
@@ -128,6 +138,7 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
    * was about to fade in, switch to it now so the tap still gets a response.
    */
   const handleError = (slot: SlotIndex, url: string) => {
+    markShown(url, false);
     if (!retried.current.has(url)) {
       retried.current.add(url);
       videos.current[slot]?.load();
@@ -147,6 +158,7 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
           <div
             key={slot}
             data-clip={`${model.slug}-${slotClip}`}
+            data-video-shown={url && shown.has(url) ? "" : undefined}
             className="absolute inset-0 transition-opacity duration-900"
             style={{ opacity: stage.active === slot ? 1 : 0 }}
           >
@@ -167,6 +179,7 @@ export function ExperienceVideoStage({ model, clip }: ExperienceVideoStageProps)
                 loop
                 autoPlay={slot === stage.active}
                 preload="auto"
+                onLoadedData={() => markShown(url, true)}
                 onError={() => handleError(slot, url)}
               />
             )}

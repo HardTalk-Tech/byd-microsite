@@ -59,6 +59,8 @@ Install the app once (option A), even if you then launch it in kiosk mode: Chrom
 
 **Android screens.** If Chrome can't install the app, open the site in a normal Chrome tab: the first tap anywhere switches it to full screen (Chrome's address bar and Android's bars hide, so the page fills the screen with no side gaps). Pressing Back leaves full screen; the next tap goes back in. To stop visitors leaving Chrome, use Android's *App pinning* (Settings → Security). Use an up-to-date Chrome: browsers that rely on an old *Android System WebView* (e.g. some kiosk apps) can show the site broken.
 
+**Smooth video on weak hardware.** The panels over the videos use a near-solid dark background instead of blurred "glass" (blur over a playing video is redrawn every frame, which made video lag on the kiosk), and the shimmer under a video stops once the video is showing. This is the same on every device.
+
 ## 5. First launch
 
 1. Connect to the internet and open the site.
