@@ -26,6 +26,8 @@ export function MediaVideo({ src, fallback, poster, className }: MediaVideoProps
   const retried = useRef(false);
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const playable = src && src !== failedSrc ? src : null;
+  /** The video that has a frame on screen (it covers the fallback, so its shimmer stops). */
+  const [shownSrc, setShownSrc] = useState<string | null>(null);
 
   // Play only while ≥ 50 % visible (e.g. the hero pauses once Home is scrolled).
   useEffect(() => {
@@ -53,6 +55,7 @@ export function MediaVideo({ src, fallback, poster, className }: MediaVideoProps
   useEffect(() => () => clearTimeout(retryTimer.current), []);
 
   const handleError = () => {
+    setShownSrc(null);
     if (!retried.current) {
       retried.current = true;
       // Short pause first, so a passing network blip is over before the retry.
@@ -63,7 +66,10 @@ export function MediaVideo({ src, fallback, poster, className }: MediaVideoProps
   };
 
   return (
-    <div className={className ?? "absolute inset-0"}>
+    <div
+      className={className ?? "absolute inset-0"}
+      data-video-shown={playable && shownSrc === playable ? "" : undefined}
+    >
       {fallback}
       {playable && (
         <video
@@ -76,6 +82,7 @@ export function MediaVideo({ src, fallback, poster, className }: MediaVideoProps
           playsInline
           loop
           preload="auto"
+          onLoadedData={() => setShownSrc(playable)}
           onError={handleError}
         />
       )}

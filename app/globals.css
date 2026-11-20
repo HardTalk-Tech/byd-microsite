@@ -211,12 +211,26 @@ textarea {
   user-select: text;
 }
 
-/* Glass panels: without backdrop-filter, use a near-solid surface instead. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  [class*="backdrop-blur"],
-  [class*="backdrop-glass"] {
-    background-color: rgba(16, 17, 20, 0.94) !important;
-  }
+/* A video that has a frame covers its backdrop (VideoBackdrop): stop the backdrop's shimmer
+   underneath, which would otherwise be redrawn every frame for nothing. */
+[data-video-shown] [data-media-kind="video"] [data-motion="hide"] {
+  display: none !important;
+}
+
+/* Glass panels are drawn WITHOUT blur, on every device. The blur behind panels over a
+   playing video has to be redrawn for every video frame, which made video lag on the
+   kiosk's graphics chip. Panels get a near-solid surface instead; full-screen scrims
+   (inset-0) keep their own colour. This switches off the backdrop-blur-* / backdrop-glass*
+   classes still used in the components. */
+*,
+*::before,
+*::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+[class*="backdrop-blur"]:not([class*="inset-0"]),
+[class*="backdrop-glass"]:not([class*="inset-0"]) {
+  background-color: rgba(16, 17, 20, 0.86) !important;
 }
 
 /* Reduced motion: stop the decorative loops (sweeps, ripples, scroll cue, swipe hint). */
